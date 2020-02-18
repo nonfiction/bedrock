@@ -1,0 +1,16 @@
+version: '3.7'
+services:
+  app:
+    build: .
+    image: nonfiction/bedrock:latest
+    volumes:
+      - type: bind
+        source: .
+        target: /srv
+        read_only: true
+      - type: bind
+        source: ./config/vhost.conf
+        target: /etc/apache2/sites-available/000-default.conf
+        read_only: true
+    ports:
+      - "8000:80"
