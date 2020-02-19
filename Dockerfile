@@ -77,7 +77,7 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 RUN set -ex; \
 	curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar; \
 	chmod +x wp-cli.phar; \
-	sudo mv wp-cli.phar /usr/local/bin/wp
+	mv wp-cli.phar /usr/local/bin/wp
 
 # node, npm, npx
 ARG NODEJS=https://nodejs.org/dist/v12.16.1/node-v12.16.1-linux-x64.tar.xz
