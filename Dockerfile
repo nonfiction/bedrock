@@ -15,9 +15,6 @@ RUN set -ex; \
     zlib1g-dev \
   ;
 
-# Composer
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-
 # https://make.wordpress.org/hosting/handbook/handbook/server-environment/#php-extensions
 RUN set -ex; \
   docker-php-ext-configure gd --with-freetype --with-jpeg; \
@@ -73,12 +70,31 @@ RUN set -ex; \
 	a2enconf remoteip; \
 	find /etc/apache2 -type f -name '*.conf' -exec sed -ri 's/([[:space:]]*LogFormat[[:space:]]+"[^"]*)%h([^"]*")/\1%a\2/g' '{}' +
 
+# Composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+# WP-CLI
+RUN set -ex; \
+	curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar; \
+	chmod +x wp-cli.phar; \
+	sudo mv wp-cli.phar /usr/local/bin/wp
+
+# node, npm, npx
+ARG NODEJS=https://nodejs.org/dist/v12.16.1/node-v12.16.1-linux-x64.tar.xz
+RUN set -ex; \
+  cd /tmp && mkdir nodejs; \
+  curl ${NODEJS} > nodejs.tar.xz; \
+  tar -xJf nodejs.tar.xz -C nodejs --strip-components 1; \
+  mv nodejs/bin/* /usr/local/bin/; \
+  mv nodejs/lib/node_modules /usr/local/lib/; \
+  rm -rf nodejs*
+
 # Copy the codebase
 COPY . /srv
 
 WORKDIR /srv
 
-# Update remote to use https
+# Update git remote to use https
 RUN /bin/bash -c \
 		'str=($(git remote -v | grep fetch)) && \
 		origin=${str[1]} && \
@@ -86,9 +102,6 @@ RUN /bin/bash -c \
 
 # Symlink the apache vhost to where it will be found
 RUN ln -sf /srv/config/vhost.conf /etc/apache2/sites-available/000-default.conf
-
-# # Install all packages, including Wordpress
-# RUN composer update
 
 ADD ./run.sh /run.sh
 RUN chmod +x /run.sh
