@@ -8,6 +8,7 @@ RUN set -ex; \
   apt-get install -y --no-install-recommends \
     ghostscript \
     git-core \
+    less \
     libfreetype6-dev \
     libjpeg-dev \
     libmagickwand-dev \
