@@ -5,4 +5,3 @@
 ## 2. Install plugins from the root directory:
 
   composer update -d ../../.. 
-

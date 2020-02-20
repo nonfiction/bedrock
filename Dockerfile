@@ -1,3 +1,5 @@
+# https://hub.docker.com/_/php/
+# https://github.com/docker-library/php
 FROM php:7.4-apache
 
 # Install packages we need for WordPress
@@ -80,10 +82,9 @@ RUN set -ex; \
 	mv wp-cli.phar /usr/local/bin/wp
 
 # node, npm, npx
-ARG NODEJS=https://nodejs.org/dist/v12.16.1/node-v12.16.1-linux-x64.tar.xz
 RUN set -ex; \
   cd /tmp && mkdir nodejs; \
-  curl ${NODEJS} > nodejs.tar.xz; \
+  curl https://nodejs.org/dist/v12.16.1/node-v12.16.1-linux-x64.tar.xz > nodejs.tar.xz; \
   tar -xJf nodejs.tar.xz -C nodejs --strip-components 1; \
   mv nodejs/bin/* /usr/local/bin/; \
   mv nodejs/lib/node_modules /usr/local/lib/; \
@@ -92,18 +93,18 @@ RUN set -ex; \
 # Copy the codebase
 COPY . /srv
 
-WORKDIR /srv
-
 # Update git remote to use https
 RUN /bin/bash -c \
-		'str=($(git remote -v | grep fetch)) && \
+		'cd /srv && \
+		str=($(git remote -v | grep fetch)) && \
 		origin=${str[1]} && \
 		git remote set-url origin "${origin//git@github.com:/https:\/\/github.com\/}"'
 
 # Symlink the apache vhost to where it will be found
 RUN ln -sf /srv/config/vhost.conf /etc/apache2/sites-available/000-default.conf
 
-ADD ./run.sh /run.sh
+COPY ./run.sh /run.sh
 RUN chmod +x /run.sh
-
 CMD /run.sh
+
+WORKDIR /srv/web/app/site/

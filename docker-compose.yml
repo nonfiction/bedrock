@@ -12,5 +12,10 @@ services:
         source: ./config/vhost.conf
         target: /etc/apache2/sites-available/000-default.conf
         read_only: true
-    ports:
-      - "8000:80"
+    expose:
+      - 80
+    networks:
+      - frontend
+networks:
+  frontend:
+    driver: build
