@@ -82,14 +82,14 @@ RUN set -ex; \
 	chmod +x wp-cli.phar; \
 	mv wp-cli.phar /usr/local/bin/wp
 
-# node, npm, npx
-RUN set -ex; \
-  cd /tmp && mkdir nodejs; \
-  curl https://nodejs.org/dist/v12.16.1/node-v12.16.1-linux-x64.tar.xz > nodejs.tar.xz; \
-  tar -xJf nodejs.tar.xz -C nodejs --strip-components 1; \
-  mv nodejs/bin/* /usr/local/bin/; \
-  mv nodejs/lib/node_modules /usr/local/lib/; \
-  rm -rf nodejs*
+# # node, npm, npx
+# RUN set -ex; \
+#   cd /tmp && mkdir nodejs; \
+#   curl https://nodejs.org/dist/v12.16.1/node-v12.16.1-linux-x64.tar.xz > nodejs.tar.xz; \
+#   tar -xJf nodejs.tar.xz -C nodejs --strip-components 1; \
+#   mv nodejs/bin/* /usr/local/bin/; \
+#   mv nodejs/lib/node_modules /usr/local/lib/; \
+#   rm -rf nodejs*
 
 # Copy the codebase
 COPY . /srv

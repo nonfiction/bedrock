@@ -1,10 +1,10 @@
 IMAGE=nonfiction/bedrock
 
-all:
-	@echo "image shell push"
+command:
+	@echo "docker-compose up web"
 
-image:
-	docker build --tag $(IMAGE) .
+build:
+	DOCKER_BUILDKIT=1 docker build --tag $(IMAGE) .
 
 shell: 
 	docker run --rm -it $(IMAGE) /bin/bash
