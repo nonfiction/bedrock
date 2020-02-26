@@ -33,6 +33,11 @@ if (file_exists($root_dir . '/.env')) {
   }
 }
 
+$dotenv_salts = Dotenv\Dotenv::create($root_dir, '.env-salts');
+if (file_exists($root_dir . '/.env-salts')) {
+  $dotenv_salts->load();
+}
+
 /**
  * Set up our global environment constant and load its config first
  * Default: production
@@ -54,6 +59,8 @@ if (env('WP_HOME')) {
   Config::define('WP_HOME', env('WP_HOME'));
   Config::define('WP_SITEURL', env('WP_SITEURL') ?: env('WP_HOME') . '/wp');
 } else {
+	// if ( isset( $_SERVER['HTTP_X_HTTPS'] ) ) $_SERVER['HTTPS'] = 'on';   
+	$_SERVER['HTTPS'] = 'on';   
   $http_or_https = ( isset( $_SERVER['HTTPS'] ) ) ? 'https' : 'http';
   Config::define('WP_HOME', "${http_or_https}://" . env('HTTP_HOST'));
   Config::define('WP_SITEURL', "${http_or_https}://" . env('HTTP_HOST') . '/wp');
