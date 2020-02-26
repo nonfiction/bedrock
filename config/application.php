@@ -27,7 +27,7 @@ Env::init();
 $dotenv = Dotenv\Dotenv::create($root_dir);
 if (file_exists($root_dir . '/.env')) {
   $dotenv->load();
-  $dotenv->required(['APP_NAME']);
+  $dotenv->required(['APP']);
   if (!env('DATABASE_URL')) {
     $dotenv->required(['DB_NAME', 'DB_USER', 'DB_PASSWORD']);
   }
@@ -105,7 +105,7 @@ if (env('S3_UPLOADS_SPACE')) {
   Config::define('S3_UPLOADS_REGION', env('S3_UPLOADS_REGION'));
   Config::define('S3_UPLOADS_ENDPOINT', 'https://'.env('S3_UPLOADS_REGION').'.digitaloceanspaces.com');
 
-  $BUCKET = env('S3_UPLOADS_BUCKET') ?: env('APP_NAME');
+  $BUCKET = env('S3_UPLOADS_BUCKET') ?: env('APP');
   Config::define('S3_UPLOADS_BUCKET', env('S3_UPLOADS_SPACE')."/${BUCKET}");
   Config::define('S3_UPLOADS_BUCKET_URL', 'https://'.env('S3_UPLOADS_SPACE').'.'.env('S3_UPLOADS_REGION').".digitaloceanspaces.com/${BUCKET}");
 
