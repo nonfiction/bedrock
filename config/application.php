@@ -29,12 +29,13 @@ if (file_exists($root_dir . '/.env')) {
   $dotenv->load();
   $dotenv->required(['APP']);
   if (!env('DATABASE_URL')) {
-    $dotenv->required(['DB_NAME', 'DB_USER', 'DB_PASSWORD']);
+    $dotenv->required(['DB_HOST']);
+    // $dotenv->required(['DB_NAME', 'DB_USER', 'DB_PASSWORD']);
   }
 }
 
-$dotenv_salts = Dotenv\Dotenv::create($root_dir, '.env-salts');
-if (file_exists($root_dir . '/.env-salts')) {
+$dotenv_salts = Dotenv\Dotenv::create($root_dir, 'salts.env');
+if (file_exists($root_dir . '/salts.env')) {
   $dotenv_salts->load();
 }
 
@@ -77,8 +78,8 @@ Config::define('WP_CONTENT_URL', Config::get('WP_HOME') . Config::get('CONTENT_D
 /**
  * DB settings
  */
-Config::define('DB_NAME', env('DB_NAME'));
-Config::define('DB_USER', env('DB_USER'));
+Config::define('DB_NAME', env('DB_NAME') ?: env('APP'));
+Config::define('DB_USER', env('DB_USER') ?: env('APP'));
 Config::define('DB_PASSWORD', env('DB_PASSWORD'));
 Config::define('DB_HOST', env('DB_HOST') ?: 'localhost');
 Config::define('DB_CHARSET', 'utf8mb4');
@@ -93,8 +94,6 @@ if (env('DATABASE_URL')) {
   Config::define('DB_PASSWORD', isset($dsn->pass) ? $dsn->pass : null);
   Config::define('DB_HOST', isset($dsn->port) ? "{$dsn->host}:{$dsn->port}" : $dsn->host);
 }
-
-// Config::define('WP_USE_EXT_MYSQL', true);
 
 /**
  * S3 settings
