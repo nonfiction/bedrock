@@ -1,4 +1,10 @@
-version: '3.7'
+version: "3.7"
+
+networks:
+  traefik:
+    name: traefik
+    external: true
+
 services:
   web:
     build: .
@@ -14,8 +20,6 @@ services:
         read_only: true
     expose:
       - 80
+      - 443
     networks:
-      - frontend
-networks:
-  frontend:
-    driver: build
+      - traefik
