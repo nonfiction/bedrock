@@ -10,6 +10,10 @@ Please type your app_name
 
 APP: ' APP
 
+APP=${APP// /_} # Replace spaces
+APP=${APP//-/_} # Replace hyphens
+APP="${APP,,}"  # Lowercase
+
 # DB_HOST input
 read -p $'
 Please enter your database host
