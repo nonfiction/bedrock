@@ -40,4 +40,4 @@ ENV="${ENV}S3_UPLOADS_KEY=\n"
 ENV="${ENV}S3_UPLOADS_SECRET=\n"
 ENV="${ENV}S3_UPLOADS_DISABLE_REPLACE_UPLOAD_URL=false\n"
 
-echo -e $ENV
+echo -e $ENV > /.env
