@@ -23,8 +23,8 @@ web/app/site/theme/dist
 
 # Dotenv
 .env
-.env.*
-!.env.example
+!salt.env
+!example.env
 
 # Composer
 /vendor

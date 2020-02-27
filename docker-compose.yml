@@ -9,6 +9,9 @@ services:
   web:
     build: .
     image: nonfiction/bedrock:latest
+    env_file: .env
+    environment:
+      WP_ENV: development
     volumes:
       - type: bind
         source: .

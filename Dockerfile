@@ -9,6 +9,7 @@ RUN set -ex; \
     ghostscript \
     git-core \
     less \
+    pwgen \
     libfreetype6-dev \
     libjpeg-dev \
     libmagickwand-dev \
@@ -98,8 +99,11 @@ RUN /bin/bash -c \
 # Symlink the apache vhost to where it will be found
 RUN ln -sf /srv/config/vhost.conf /etc/apache2/sites-available/000-default.conf
 
-COPY ./run.sh /run.sh
-RUN chmod +x /run.sh
-CMD /run.sh
+COPY ./dotenv.sh /bin/dotenv
+RUN chmod +x /bin/dotenv
+
+COPY ./run.sh /bin/run
+RUN chmod +x /bin/run
 
 WORKDIR /srv/web/app/site/
+CMD /bin/run
