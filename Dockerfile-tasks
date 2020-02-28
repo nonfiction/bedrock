@@ -1,0 +1,18 @@
+FROM mysql:latest
+
+RUN set -ex; \
+  apt-get update; \
+  apt-get install -y --no-install-recommends \
+    pwgen \
+    ruby \
+  ;
+
+RUN gem install thor dotenv
+
+COPY ./Thorfile /bin/tasks
+RUN chmod +x /bin/tasks
+
+RUN touch /.env
+
+ENTRYPOINT ["tasks"]
+CMD ["list"]

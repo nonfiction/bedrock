@@ -8,7 +8,7 @@ networks:
 services:
   web:
     build: .
-    image: nonfiction/bedrock:latest
+    image: nonfiction/bedrock:web
     env_file: .env
     environment:
       WP_ENV: development
@@ -26,3 +26,15 @@ services:
       - 443
     networks:
       - traefik
+
+  dev:
+    build:
+      context: .
+      dockerfile: Dockerfile-dev
+    image: nonfiction/bedrock:dev
+
+  tasks:
+    build:
+      context: .
+      dockerfile: Dockerfile-tasks
+    image: nonfiction/bedrock:tasks
