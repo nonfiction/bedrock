@@ -28,6 +28,7 @@ class MyThorCommand < Thor
       out, err, stat = Open3.capture3(cmd)
       return out
     end
+
   end
 
   desc "list", "List Commands"
@@ -65,11 +66,10 @@ class MyThorCommand < Thor
       DB_PASSWORD=#{`pwgen -s 20`}
       DB_PREFIX=wp
       
+      # Leave DB_NAME unset in this file. DB_NAME is automatically set to one of the below:"
+      # DB_NAME=
       DB_NAME_PRODUCTION=#{app}
       DB_NAME_DEVELOPMENT=#{clean("#{app}_#{ENV['HOSTNAME']}")}
-      
-      # Leave DB_NAME unset in this file. DB_NAME is automatically set to "${APP}_${WP_ENV}"
-      # DB_NAME=
       
       # Leave WP_ENV unset in this file. WP_ENV is set in docker-compose.yml
       # WP_ENV=
