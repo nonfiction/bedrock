@@ -99,11 +99,8 @@ RUN /bin/bash -c \
 # Symlink the apache vhost to where it will be found
 RUN ln -sf /srv/config/vhost.conf /etc/apache2/sites-available/000-default.conf
 
-COPY ./dotenv.sh /bin/dotenv
-RUN chmod +x /bin/dotenv
-
 COPY ./run.sh /bin/run
 RUN chmod +x /bin/run
+CMD /bin/run
 
 WORKDIR /srv/web/app/site/
-CMD /bin/run
