@@ -298,7 +298,9 @@ class MyThorCommand < Thor
 
     # Build .env configuration
     dotenv = <<~DOTENV.strip
-      # https://#{ENV['APP_NAME']}.#{ENV['APP_HOST']}/
+      # https://#{ENV['APP_NAME']}.#{ENV['APP_HOST']}/wp/wp-login.php
+      # Username: #{ENV['DB_ADMIN_USER']}
+      # Password: #{ENV['DB_PASSWORD']}
       APP_NAME=#{ENV['APP_NAME']}
       APP_HOST=#{ENV['APP_HOST']}
 
@@ -309,7 +311,6 @@ class MyThorCommand < Thor
       DB_HOST=#{ENV['DB_HOST']}
       DB_USER=#{ENV['DB_USER']}
       DB_PASSWORD=#{ENV['DB_PASSWORD']}
-      DB_PREFIX=wp
       
       # When DB_NAME is undefined, it's automatically set to "${APP_NAME}_${APP_HOST}"
       # DB_NAME forces the database name, regardless of WP_ENV or APP_HOST

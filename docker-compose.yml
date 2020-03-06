@@ -35,8 +35,8 @@ services:
       dockerfile: Dockerfile-dev
     image: nonfiction/bedrock:dev
 
-  db:
+  env:
     build:
       context: .
-      dockerfile: Dockerfile-db
-    image: nonfiction/bedrock:db
+      dockerfile: Dockerfile-env
+    image: nonfiction/bedrock:env
