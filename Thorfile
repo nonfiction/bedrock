@@ -211,7 +211,7 @@ class MyThorCommand < Thor
     def env_DB_USER
       key = 'DB_USER'
       if ENV[key].to_s.empty?
-        ENV[key] = ENV['APP_NAME']
+        ENV[key] = slug(ENV['APP_NAME'])
       end
       msg_env key
       !ENV[key].to_s.empty?

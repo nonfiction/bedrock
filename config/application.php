@@ -79,7 +79,8 @@ Config::define('WP_CONTENT_URL', Config::get('WP_HOME') . Config::get('CONTENT_D
 // DB settings
 $DB_NAME_ENV = strtoupper('DB_NAME_'.WP_ENV);
 Config::define('DB_NAME', env('DB_NAME') ?: (env($DB_NAME_ENV) ?: $APP_NAME_HOST));
-Config::define('DB_USER', env('DB_USER') ?: env('APP_NAME'));
+$DB_USER = strtolower(str_replace( [' ', '-', '.'], '_', env('APP_NAME') ));
+Config::define('DB_USER', env('DB_USER') ?: $DB_USER);
 Config::define('DB_PASSWORD', env('DB_PASSWORD'));
 Config::define('DB_HOST', env('DB_HOST') ?: 'localhost');
 Config::define('DB_CHARSET', 'utf8mb4');
