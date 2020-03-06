@@ -9,7 +9,7 @@ A foundation for setting up new Wordpress sites, highly influenced by
 
 - **bedrock:web** Wordpress on Apache (composer, wpcli)
 - **bedrock:dev** Webpack Dev Server (npm)
-- **bedrock:db** MySQL Client (ruby, thor)
+- **bedrock:env** MySQL Client and .env generator (ruby, thor)
 
 ## Development
 
