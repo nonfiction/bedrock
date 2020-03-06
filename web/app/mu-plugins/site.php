@@ -1,7 +1,7 @@
 <?php
 /*
-Plugin Name: site
-Description: Site's theme nested in plugin in app dir
+Plugin Name: Website Plugin & Theme
+Description: Website's theme nested in plugin (in app dir)
 Author: nonfiction studios
 Version: 1.0
 */

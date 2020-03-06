@@ -228,37 +228,6 @@ class MyThorCommand < Thor
       !ENV[key].to_s.empty?
     end
 
-    # def env_WP_USER
-    #   key = 'WP_USER'
-    #   if ENV[key].to_s.empty?
-    #     ENV[key] = 'nonfiction'
-    #   end
-    #   msg_env key
-    #   !ENV[key].to_s.empty?
-    # end
-
-    # def env_WP_EMAIL
-    #   key = 'WP_EMAIL'
-    #   if ENV[key].to_s.empty?
-    #     ENV[key] = 'web@nonfiction.ca'
-    #   end
-    #   msg_env key
-    #   !ENV[key].to_s.empty?
-    # end
-
-    # def env_WP_PASSWORD
-    #   key = 'WP_PASSWORD'
-    #   did_input = false
-    #   if ENV[key].to_s.empty?
-    #     msg ""
-    #     msg "Enter the password for the WordPress admin user \"#{ENV['WP_USER']}\""
-    #     ENV[key] = input key
-    #     did_input = true
-    #   end
-    #   msg_env key unless did_input
-    #   !ENV[key].to_s.empty?
-    # end
-
     def env_S3_UPLOADS_KEY
       key = 'S3_UPLOADS_KEY'
       did_input = false
@@ -293,7 +262,7 @@ class MyThorCommand < Thor
 
   desc "list", "List Commands"
   def list
-    puts "all the commands"
+    puts "dotenv dbcreate"
   end
 
 
@@ -334,7 +303,7 @@ class MyThorCommand < Thor
       APP_HOST=#{ENV['APP_HOST']}
 
       # Comma-separated remote docker hosts for deployment
-      REMOTES=#{ENV['APP_HOST']}
+      REMOTES=#{ENV['REMOTES']}
 
       # https://cloud.digitalocean.com/databases
       DB_HOST=#{ENV['DB_HOST']}
@@ -384,9 +353,6 @@ class MyThorCommand < Thor
 
     # Run db task
     dbcreate
-
-    # Run wpinstall task
-    # wpinstall
   end
 
 
@@ -440,33 +406,6 @@ class MyThorCommand < Thor
     end
 
   end
-
-  # desc "wpinstall", "Run WordPress installer"
-  # def wpinstall
-  #   say bold("WP INSTALL")
-  #
-  #   return unless env_APP_NAME
-  #   return unless env_APP_HOST
-  #   return unless env_WP_USER
-  #   return unless env_WP_EMAIL
-  #   return unless env_WP_PASSWORD
-  #
-  #   # Install WordPress on disk
-  #   cli "composer update -d /srv" 
-  #
-  #   # Install WordPress on database
-  #   cli([
-  #     "wp core install",
-  #     "--path=#{Dir.pwd}/wp",
-  #     "--url=https://#{ENV['APP_NAME']}.#{ENV['APP_HOST']}/wp", 
-  #     "--title=#{ENV['APP_NAME']}",
-  #     "--admin_user=#{ENV['WP_USER']}",
-  #     "--admin_password=#{ENV['WP_PASSWORD']}",
-  #     "--admin_email=#{ENV['WP_EMAIL']}"
-  #   ].join(' '))
-  #
-  # end
-
 end
 
 MyThorCommand.start
