@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Website Plugin & Theme
-Description: Website's theme nested in plugin (in app dir)
+Description: Nonfiction's configuration for this website
 Author: nonfiction studios
 Version: 1.0
 */
