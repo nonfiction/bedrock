@@ -7,7 +7,9 @@ networks:
 
 services:
   web:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile-web
     image: nonfiction/bedrock:web
     env_file: .env
     environment:
@@ -33,16 +35,8 @@ services:
       dockerfile: Dockerfile-dev
     image: nonfiction/bedrock:dev
 
-  tasks:
+  db:
     build:
       context: .
-      dockerfile: Dockerfile-tasks
-    image: nonfiction/bedrock:tasks
-    
-  wp:
-    build:
-      context: .
-      dockerfile: Dockerfile-tasks
-    image: nonfiction/bedrock:wp
-    entrypoint: wp
-    command: ""
+      dockerfile: Dockerfile-db
+    image: nonfiction/bedrock:db

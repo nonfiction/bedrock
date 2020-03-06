@@ -7,13 +7,6 @@
       "url": "https://wpackagist.org"
     }
   ],
-  "config": {
-    "optimize-autoloader": true,
-    "preferred-install": "dist",
-    "sort-packages": true
-  },
-  "minimum-stability": "dev",
-  "prefer-stable": true,
   "autoload": {
     "psr-4": {
       "nf\\": "src/"
@@ -21,9 +14,9 @@
   },
   "require": {
     "wpackagist-plugin/disable-comments": "^1.10",
-    "wpackagist-plugin/members": "^2.2",
     "wpackagist-plugin/duplicate-post": "^3.2",
     "wpackagist-plugin/imsanity": "^2.5",
+    "wpackagist-plugin/members": "^2.2",
     "wpackagist-plugin/simple-page-ordering": "^2.3"
   }
 }
