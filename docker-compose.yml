@@ -38,3 +38,11 @@ services:
       context: .
       dockerfile: Dockerfile-tasks
     image: nonfiction/bedrock:tasks
+    
+  wp:
+    build:
+      context: .
+      dockerfile: Dockerfile-tasks
+    image: nonfiction/bedrock:wp
+    entrypoint: wp
+    command: ""
