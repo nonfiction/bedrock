@@ -133,7 +133,7 @@ class MyThorCommand < Thor
 
         name = name_from_package
         if name
-          ENV[key] = slug(name).to_s
+          ENV[key] = clean(name).to_s
           msg_env key
 
         else
@@ -143,7 +143,7 @@ class MyThorCommand < Thor
           msg " - alphanumeric"
           msg " - underscore"
           msg " - maxlength 50 characters"
-          ENV[key] = slug(input(key))
+          ENV[key] = input(key)
         end
         
       else
@@ -286,14 +286,14 @@ class MyThorCommand < Thor
 
     if env_S3_UPLOADS_KEY
       env_S3_UPLOADS_SECRET 
-    end
+    end	
 
-    # Update name in package.json
-    unless name_from_package
-      if File.file? 'package.json'
-        package = File.read('package.json').gsub(/#{default_package_name}/, ENV['APP_NAME'])
-        msg "Writing package.json with new name: #{ENV['APP_NAME']}"
-        create_file "package.json", package, :force => true
+    # Update name in package.json, docker-compose.yml
+		['package.json', 'package-lock.json', 'docker-compose.yml'].each do |filename|
+      if File.file? filename
+        text = File.read(filename).gsub(/#{default_package_name}/, ENV['APP_NAME'])
+        msg "Writing #{filename} with new name: #{ENV['APP_NAME']}"
+        create_file filename, text, :force => true
       end
     end
 
