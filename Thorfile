@@ -289,7 +289,7 @@ class MyThorCommand < Thor
     end	
 
     # Update name in package.json, docker-compose.yml
-		['package.json', 'package-lock.json', 'docker-compose.yml'].each do |filename|
+    ['package.json', 'package-lock.json', 'docker-compose.yml'].each do |filename|
       if File.file? filename
         text = File.read(filename).gsub(/#{default_package_name}/, ENV['APP_NAME'])
         msg "Writing #{filename} with new name: #{ENV['APP_NAME']}"
