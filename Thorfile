@@ -279,6 +279,7 @@ class MyThorCommand < Thor
     return unless env_REMOTES
 
     env_APP_NAME_HOST
+    env_DB_ADMIN_USER
     
     return unless env_DB_USER
     return unless env_DB_PASSWORD
