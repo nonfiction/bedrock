@@ -58,7 +58,23 @@ class MyThorCommand < Thor
       hash = Digest::SHA512.hexdigest(text + salt)
       hash[0..max_length]
     end
-
+  
+		def choose(prompt = "", choices = [])
+			env_APP_NAME
+			args = [
+				"--clear",
+				"--output-fd 1",
+				"--title \"#{ENV['APP_NAME']}\"",
+				"--menu \"#{prompt}\"",
+				'15 40 4'
+			]
+			opts = choices.map.with_index do |choice, index|
+				"#{index + 1} \"#{choice}\""	
+			end
+			chosen_index = cli("dialog #{args.join(' ')} #{opts.join(' ')}", false)
+			return chosen_index.to_i - 1
+		end
+         
     def default_package_name
       'bedrock-site'
     end
@@ -259,10 +275,9 @@ class MyThorCommand < Thor
   end
     
     
-
   desc "list", "List Commands"
   def list
-    puts "dotenv dbcreate"
+    puts "dotenv db_create choose_remote"
   end
 
 
@@ -354,12 +369,12 @@ class MyThorCommand < Thor
     create_file ".env", dotenv, :force => true
 
     # Run db task
-    dbcreate
+    db_create
   end
 
 
-  desc "dbcreate", "Creates databases and user"
-  def dbcreate
+  desc "db_create", "Creates databases and user"
+  def db_create
     say bold("DB CREATE")
 
     return unless env_DB_HOST
@@ -406,8 +421,15 @@ class MyThorCommand < Thor
        # Grant database access permissions to admin user
        mysql "GRANT ALL ON #{db_name}.* TO '#{ENV['DB_ADMIN_USER']}'@'%';"
     end
-
   end
-end
 
+  desc "choose_remote", "Choose remote from .env"
+  def choose_remote
+    return unless env_REMOTES
+		remotes = ENV['REMOTES'].split(',').uniq - ['']
+		index = choose("Choose remote:", remotes)
+    create_file '/tmp/remote.txt', remotes[index], :force => true, :verbose => false
+  end
+
+end
 MyThorCommand.start
