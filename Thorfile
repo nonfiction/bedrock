@@ -115,6 +115,28 @@ class MyThorCommand < Thor
       base = "mysql -h#{host} -P#{port} -u#{user} -p#{pass} -e"
       return cli("#{base} \"#{command}\"", false)
     end
+
+		def mysql_migrate(source_db, dest_db, echo = true)
+
+			if (source_db == dest_db)
+				say("#{set_color(' > ', :black, :on_yellow, :bold)} #{set_color("Databases match", :yellow)}")
+				return false
+			end
+
+			say("#{set_color(' > ', :black, :on_yellow, :bold)} #{set_color("#{source_db} -> #{dest_db}", :yellow)}") if echo
+
+			user = ENV['DB_USER']
+			pass = ENV['DB_PASSWORD']
+			host = ENV['DB_HOST'].split(':')[0]
+			port = ENV['DB_HOST'].split(':')[1]
+
+			# mysqldump -u user --password=pass live_db_name | mysql -u user --password=pass -h localhost duplicate_db_name
+			export = "mysqldump -h#{host} -P#{port} -u#{user} -p#{pass} #{source_db}"
+			import = "mysql -h#{host} -P#{port} -u#{user} -p#{pass} #{dest_db}"
+			say "#{export} | #{import}"
+			return cli("#{export} | #{import}", false)
+		end
+
     
     def env_DB_HOST
       key = 'DB_HOST'
@@ -192,18 +214,26 @@ class MyThorCommand < Thor
       !ENV[key].to_s.empty?
     end
 
-    def env_REMOTES
-      key = 'REMOTES'
-      remotes = [ENV['APP_HOST']]
+    def env_DEPLOY_HOST
+      key = 'DEPLOY_HOST'
+      if ENV[key].to_s.empty?
+				ENV[key] = ENV['APP_HOST']
+      end
+      !ENV[key].to_s.empty?
+    end
+
+    def env_DEPLOY_HOSTS
+      key = 'DEPLOY_HOSTS'
+      deploy_hosts = [ENV['DEPLOY_HOSTS']]
       if ENV[key].to_s.empty?
         msg ""
-        msg "Enter a host for REMOTES (optional)"
-        msg "Example: prod1.example.com"
-        remotes << input(key)
+        msg "Enter a DEPLOY_HOST (optional)"
+        msg "Example: app1.example.com"
+        deploy_hosts << input(key)
       else
-        remotes << ENV[key]
+        deploy_hosts << ENV[key]
       end
-      ENV[key] = remotes.uniq.join(',').to_s
+      ENV[key] = deploy_hosts.uniq.join(',').to_s
       msg_env key
       !ENV[key].to_s.empty?
     end
@@ -291,7 +321,7 @@ class MyThorCommand < Thor
 
     return unless env_APP_NAME
     return unless env_APP_HOST
-    return unless env_REMOTES
+    return unless env_DEPLOY_HOSTS
 
     env_APP_NAME_HOST
     env_DB_ADMIN_USER
@@ -318,10 +348,11 @@ class MyThorCommand < Thor
       # Username: #{ENV['DB_ADMIN_USER']}
       # Password: #{ENV['DB_PASSWORD']}
       APP_NAME=#{ENV['APP_NAME']}
-      APP_HOST=#{ENV['APP_HOST']}
+			APP_HOST=#{ENV['APP_HOST']}
 
-      # Comma-separated remote docker hosts for deployment
-      REMOTES=#{ENV['REMOTES']}
+			# Comma-separated remote docker hosts for deployment
+			DEPLOY_HOSTS=#{ENV['DEPLOY_HOSTS']}
+			DEPLOY_HOST=#{ENV['DEPLOY_HOSTS']}
 
       # https://cloud.digitalocean.com/databases
       DB_HOST=#{ENV['DB_HOST']}
@@ -362,6 +393,10 @@ class MyThorCommand < Thor
       
       # WP_ENV is set in docker-compose.yml (development, staging, production)
       # WP_ENV=
+
+			# Used by docker-compose
+			COMPOSE_DOCKER_CLI_BUILD=1
+			DOCKER_BUILDKIT=1 
     DOTENV
 
     # Write .env file
@@ -383,7 +418,7 @@ class MyThorCommand < Thor
     return unless env_DB_ADMIN_USER
     return unless env_APP_NAME
     return unless env_APP_HOST
-    return unless env_REMOTES
+    return unless env_DEPLOY_HOSTS
     return unless env_DB_USER
     return unless env_DB_PASSWORD
     env_APP_NAME_HOST
@@ -404,7 +439,7 @@ class MyThorCommand < Thor
     end
 
     # Array of database names (based on app_name + app_host/remote_host)
-    db_names = ([ENV['APP_HOST']] + ENV['REMOTES'].split(',')).uniq.map do |each_host|
+    db_names = ([ENV['APP_HOST']] + ENV['DEPLOY_HOSTS'].split(',')).uniq.map do |each_host|
       slug( ENV['APP_NAME'], each_host)
     end
 
@@ -423,13 +458,50 @@ class MyThorCommand < Thor
     end
   end
 
-  desc "choose_remote", "Choose remote from .env"
-  def choose_remote
-    return unless env_REMOTES
-		remotes = ENV['REMOTES'].split(',').uniq - ['']
-		index = choose("Choose remote:", remotes)
-    create_file '/tmp/remote.txt', remotes[index], :force => true, :verbose => false
+
+  desc "deploy_host", "Choose deploy host"
+  def deploy_host
+    return unless env_APP_HOST
+    return unless env_DEPLOY_HOSTS
+
+		deploy_hosts = ENV['DEPLOY_HOSTS'].split(',').uniq - ['']
+		index = 0
+		index = choose("Choose deploy host:", deploy_hosts) if deploy_hosts.length > 1
+
+		deploy_host = deploy_hosts[index]
+		ENV['DEPLOY_HOST'] = deploy_host.split('@').last
+
+		if File.file? '.env'
+			env = File.read('.env')
+      env.gsub!(/^DEPLOY_HOST=(.*)$/, "DEPLOY_HOST=#{ENV['DEPLOY_HOST']}")
+			msg "Updating .env with new DEPLOY_HOST: #{ENV['DEPLOY_HOST']}"
+			create_file '.env', env, :force => true
+		end
   end
+
+	desc "db_push", "Push the APP_HOST database to the DEPLOY_HOST database"
+	def db_push
+		return unless env_APP_NAME
+		return unless env_APP_HOST
+		return unless env_DEPLOY_HOST
+
+		source_db = slug( ENV['APP_NAME'], ENV['APP_HOST'] )
+		dest_db = slug( ENV['APP_NAME'], ENV['DEPLOY_HOST'] )
+
+		mysql_migrate(source_db, dest_db)
+	end
+
+	desc "db_pull", "Pull the DEPLOY_HOST database to the APP_HOST database"
+	def db_pull
+		return unless env_APP_NAME
+		return unless env_APP_HOST
+		return unless env_DEPLOY_HOST
+
+		source_db = slug( ENV['APP_NAME'], ENV['DEPLOY_HOST'] )
+		dest_db = slug( ENV['APP_NAME'], ENV['APP_HOST'] )
+
+		mysql_migrate(source_db, dest_db)
+	end
 
 end
 MyThorCommand.start
