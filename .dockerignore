@@ -1,43 +1,32 @@
 # Application
-web/app/plugins/*
+web/app/*
+!web/app/uploads/.gitkeep
+!web/app/themes/.gitkeep
 !web/app/plugins/.gitkeep
-web/app/mu-plugins/*/
 !web/app/mu-plugins/bedrock-autoloader.php
 !web/app/mu-plugins/register-theme-directory.php
-!web/app/mu-plugins/site.php
-web/app/upgrade
-web/app/uploads/*
-!web/app/uploads/.gitkeep
-web/app/themes/*
-!web/app/themes/.gitkeep
-web/app/db.php
 
 # WordPress
 web/wp
 web/.htaccess
 
-# Webpack
-web/app/site/theme/dist
+# Git
+.git
+.gitignore
 
-# Logs
-*.log
+# Composer
+vendor
+composer.lock
+
+# Docker
+.dockerignore
+Dockerfile-*
 
 # Dotenv
 .env
-!salt.env
-!example.env
 
-# Composer
-/vendor
-web/app/site/vendor
-
-# WP-CLI
+# Other
+Makefile
+README.md
 wp-cli.local.yml
-
-# webpack
-/node_modules
-web/app/site/node_modules
-.cache-loader
-
-# Misc
 scratch
