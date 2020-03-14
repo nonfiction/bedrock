@@ -91,13 +91,6 @@ RUN openssl req -x509 -batch -nodes -days 36525 -newkey rsa:2048 -keyout /etc/ss
 # Copy the codebase
 COPY . /srv
 
-# Update git remote to use https
-RUN /bin/bash -c \
-  'cd /srv && \
-  str=($(git remote -v | grep fetch)) && \
-  origin=${str[1]} && \
-  git remote set-url origin "${origin//git@github.com:/https:\/\/github.com\/}"'
-
 # Symlink the apache vhost to where it will be found
 RUN ln -sf /srv/config/vhost.conf /etc/apache2/sites-available/000-default.conf
 
