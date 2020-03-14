@@ -21,18 +21,18 @@ class MyThorCommand < Thor
 
     def clean(*text)
       text.join(' ')
-          .tr(' ','-')
-          .strip
-          .downcase
+        .tr(' ','-')
+        .strip
+        .downcase
     end
 
     def slug(*text)
       text.join(' ')
-          .strip
-          .downcase
-          .tr(' ','_')
-          .tr('-','_')
-          .tr('.','_')
+        .strip
+        .downcase
+        .tr(' ','_')
+        .tr('-','_')
+        .tr('.','_')
     end
 
     def input(key, echo = true)
@@ -58,23 +58,23 @@ class MyThorCommand < Thor
       hash = Digest::SHA512.hexdigest(text + salt)
       hash[0..max_length]
     end
-  
-		def choose(prompt = "", choices = [])
-			env_APP_NAME
-			args = [
-				"--clear",
-				"--output-fd 1",
-				"--title \"#{ENV['APP_NAME']}\"",
-				"--menu \"#{prompt}\"",
-				'15 40 4'
-			]
-			opts = choices.map.with_index do |choice, index|
-				"#{index + 1} \"#{choice}\""	
-			end
-			chosen_index = cli("dialog #{args.join(' ')} #{opts.join(' ')}", false)
-			return chosen_index.to_i - 1
-		end
-         
+
+    def choose(prompt = "", choices = [])
+      env_APP_NAME
+      args = [
+        "--clear",
+        "--output-fd 1",
+        "--title \"#{ENV['APP_NAME']}\"",
+        "--menu \"#{prompt}\"",
+        '15 40 4'
+      ]
+      opts = choices.map.with_index do |choice, index|
+        "#{index + 1} \"#{choice}\""	
+      end
+      chosen_index = cli("dialog #{args.join(' ')} #{opts.join(' ')}", false)
+      return chosen_index.to_i - 1
+    end
+
     def default_package_name
       'bedrock-site'
     end
@@ -116,28 +116,28 @@ class MyThorCommand < Thor
       return cli("#{base} \"#{command}\"", false)
     end
 
-		def mysql_migrate(source_db, dest_db, echo = true)
+    def mysql_migrate(source_db, dest_db, echo = true)
 
-			if (source_db == dest_db)
-				say("#{set_color(' > ', :black, :on_yellow, :bold)} #{set_color("Databases match", :yellow)}")
-				return false
-			end
+      if (source_db == dest_db)
+        say("#{set_color(' > ', :black, :on_yellow, :bold)} #{set_color("Databases match", :yellow)}")
+        return false
+      end
 
-			say("#{set_color(' > ', :black, :on_yellow, :bold)} #{set_color("#{source_db} -> #{dest_db}", :yellow)}") if echo
+      say("#{set_color(' > ', :black, :on_yellow, :bold)} #{set_color("#{source_db} -> #{dest_db}", :yellow)}") if echo
 
-			user = ENV['DB_USER']
-			pass = ENV['DB_PASSWORD']
-			host = ENV['DB_HOST'].split(':')[0]
-			port = ENV['DB_HOST'].split(':')[1]
+      user = ENV['DB_USER']
+      pass = ENV['DB_PASSWORD']
+      host = ENV['DB_HOST'].split(':')[0]
+      port = ENV['DB_HOST'].split(':')[1]
 
-			# mysqldump -u user --password=pass live_db_name | mysql -u user --password=pass -h localhost duplicate_db_name
-			export = "mysqldump -h#{host} -P#{port} -u#{user} -p#{pass} #{source_db}"
-			import = "mysql -h#{host} -P#{port} -u#{user} -p#{pass} #{dest_db}"
-			say "#{export} | #{import}"
-			return cli("#{export} | #{import}", false)
-		end
+      # mysqldump -u user --password=pass live_db_name | mysql -u user --password=pass -h localhost duplicate_db_name
+      export = "mysqldump -h#{host} -P#{port} -u#{user} -p#{pass} #{source_db}"
+      import = "mysql -h#{host} -P#{port} -u#{user} -p#{pass} #{dest_db}"
+      say "#{export} | #{import}"
+      return cli("#{export} | #{import}", false)
+    end
 
-    
+
     def env_DB_HOST
       key = 'DB_HOST'
       did_input = false
@@ -151,7 +151,7 @@ class MyThorCommand < Thor
       msg_env key unless did_input
       !ENV[key].to_s.empty?
     end
-    
+
     def env_DB_ROOT_PASSWORD
       key = 'DB_ROOT_PASSWORD'
       if ENV[key].to_s.empty?
@@ -163,7 +163,7 @@ class MyThorCommand < Thor
       end
       !ENV[key].to_s.empty?
     end
-    
+
     def env_APP_NAME
       key = 'APP_NAME'
 
@@ -183,7 +183,7 @@ class MyThorCommand < Thor
           msg " - maxlength 50 characters"
           ENV[key] = input(key)
         end
-        
+
       else
         msg_env key
       end
@@ -217,7 +217,7 @@ class MyThorCommand < Thor
     def env_DEPLOY_HOST
       key = 'DEPLOY_HOST'
       if ENV[key].to_s.empty?
-				ENV[key] = ENV['APP_HOST']
+        ENV[key] = ENV['APP_HOST']
       end
       !ENV[key].to_s.empty?
     end
@@ -303,8 +303,8 @@ class MyThorCommand < Thor
     end
 
   end
-    
-    
+
+
   desc "list", "List Commands"
   def list
     puts "dotenv db_create choose_remote"
@@ -325,7 +325,7 @@ class MyThorCommand < Thor
 
     env_APP_NAME_HOST
     env_DB_ADMIN_USER
-    
+
     return unless env_DB_USER
     return unless env_DB_PASSWORD
 
@@ -348,27 +348,27 @@ class MyThorCommand < Thor
       # Username: #{ENV['DB_ADMIN_USER']}
       # Password: #{ENV['DB_PASSWORD']}
       APP_NAME=#{ENV['APP_NAME']}
-			APP_HOST=#{ENV['APP_HOST']}
+      APP_HOST=#{ENV['APP_HOST']}
 
-			# Comma-separated remote docker hosts for deployment
-			DEPLOY_HOSTS=#{ENV['DEPLOY_HOSTS']}
-			DEPLOY_HOST=#{ENV['DEPLOY_HOSTS']}
+      # Comma-separated remote docker hosts for deployment
+      DEPLOY_HOSTS=#{ENV['DEPLOY_HOSTS']}
+      DEPLOY_HOST=#{ENV['DEPLOY_HOSTS']}
 
       # https://cloud.digitalocean.com/databases
       DB_HOST=#{ENV['DB_HOST']}
       DB_USER=#{ENV['DB_USER']}
       DB_PASSWORD=#{ENV['DB_PASSWORD']}
-      
+
       # When DB_NAME is undefined, it's automatically set to "${APP_NAME}_${APP_HOST}"
       # DB_NAME forces the database name, regardless of WP_ENV or APP_HOST
       # DB_NAME=#{ENV['APP_NAME_HOST']}
 
       # DB_NAME_DEVELOPMENT forces the database name in WP_ENV=development, regardless of APP_HOST
       # DB_NAME_DEVELOPMENT=#{ENV['APP_NAME_HOST']}
-      
+
       # DB_NAME_STAGING forces the database name in WP_ENV=staging, regardless of APP_HOST
       # DB_NAME_STAGING=#{ENV['APP_NAME_HOST']}
-      
+
       # DB_NAME_PRODUCTION forces the database name in WP_ENV=production, regardless of APP_HOST
       # DB_NAME_PRODUCTION=#{ENV['APP_NAME_HOST']}
 
@@ -381,22 +381,22 @@ class MyThorCommand < Thor
 
       # When S3_UPLOADS_BUCKET is undefined, it's automatically set to "${APP_NAME}_${APP_HOST}"
       # S3_UPLOADS_BUCKET=#{ENV['APP_NAME_HOST']}
-      
+
       # S3_UPLOADS_BUCKET_DEVELOPMENT forces the database name in WP_ENV=development, regardless of APP_HOST
       # S3_UPLOADS_BUCKET_DEVELOPMENT=#{ENV['APP_NAME_HOST']}
-      
+
       # S3_UPLOADS_BUCKET_STAGING forces the database name in WP_ENV=staging, regardless of APP_HOST
       # S3_UPLOADS_BUCKET_STAGING=#{ENV['APP_NAME_HOST']}
-      
+
       # S3_UPLOADS_BUCKET_PRODUCTION forces the database name in WP_ENV=production, regardless of APP_HOST
       # S3_UPLOADS_BUCKET_PRODUCTION=#{ENV['APP_NAME_HOST']}
-      
+
       # WP_ENV is set in docker-compose.yml (development, staging, production)
       # WP_ENV=
 
-			# Used by docker-compose
-			COMPOSE_DOCKER_CLI_BUILD=1
-			DOCKER_BUILDKIT=1 
+      # Used by docker-compose
+      COMPOSE_DOCKER_CLI_BUILD=1
+      DOCKER_BUILDKIT=1 
     DOTENV
 
     # Write .env file
@@ -432,7 +432,7 @@ class MyThorCommand < Thor
     if count > 0 then
       msg "User #{ENV['DB_USER']} already exists!"
 
-    # Create user
+      # Create user
     else
       msg "User #{ENV['DB_USER']} doesn't exist! Creating..."
       mysql "CREATE USER '#{ENV['DB_USER']}'@'%' IDENTIFIED WITH mysql_native_password BY '#{ENV['DB_PASSWORD']}';"
@@ -445,16 +445,16 @@ class MyThorCommand < Thor
 
     # Foreach database name
     db_names.each do |db_name|
-       return false if db_name.empty?
+      return false if db_name.empty?
 
-       # Create database
-       mysql "CREATE DATABASE IF NOT EXISTS #{db_name} DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;"
+      # Create database
+      mysql "CREATE DATABASE IF NOT EXISTS #{db_name} DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;"
 
       # Grant database access permissions to user
-       mysql "GRANT ALL ON #{db_name}.* TO '#{ENV['DB_USER']}'@'%';"
+      mysql "GRANT ALL ON #{db_name}.* TO '#{ENV['DB_USER']}'@'%';"
 
-       # Grant database access permissions to admin user
-       mysql "GRANT ALL ON #{db_name}.* TO '#{ENV['DB_ADMIN_USER']}'@'%';"
+      # Grant database access permissions to admin user
+      mysql "GRANT ALL ON #{db_name}.* TO '#{ENV['DB_ADMIN_USER']}'@'%';"
     end
   end
 
@@ -464,44 +464,44 @@ class MyThorCommand < Thor
     return unless env_APP_HOST
     return unless env_DEPLOY_HOSTS
 
-		deploy_hosts = ENV['DEPLOY_HOSTS'].split(',').uniq - ['']
-		index = 0
-		index = choose("Choose deploy host:", deploy_hosts) if deploy_hosts.length > 1
+    deploy_hosts = ENV['DEPLOY_HOSTS'].split(',').uniq - ['']
+    index = 0
+    index = choose("Choose deploy host:", deploy_hosts) if deploy_hosts.length > 1
 
-		deploy_host = deploy_hosts[index]
-		ENV['DEPLOY_HOST'] = deploy_host.split('@').last
+    deploy_host = deploy_hosts[index]
+    ENV['DEPLOY_HOST'] = deploy_host.split('@').last
 
-		if File.file? '.env'
-			env = File.read('.env')
+    if File.file? '.env'
+      env = File.read('.env')
       env.gsub!(/^DEPLOY_HOST=(.*)$/, "DEPLOY_HOST=#{ENV['DEPLOY_HOST']}")
-			msg "Updating .env with new DEPLOY_HOST: #{ENV['DEPLOY_HOST']}"
-			create_file '.env', env, :force => true
-		end
+      msg "Updating .env with new DEPLOY_HOST: #{ENV['DEPLOY_HOST']}"
+      create_file '.env', env, :force => true
+    end
   end
 
-	desc "db_push", "Push the APP_HOST database to the DEPLOY_HOST database"
-	def db_push
-		return unless env_APP_NAME
-		return unless env_APP_HOST
-		return unless env_DEPLOY_HOST
+  desc "db_push", "Push the APP_HOST database to the DEPLOY_HOST database"
+  def db_push
+    return unless env_APP_NAME
+    return unless env_APP_HOST
+    return unless env_DEPLOY_HOST
 
-		source_db = slug( ENV['APP_NAME'], ENV['APP_HOST'] )
-		dest_db = slug( ENV['APP_NAME'], ENV['DEPLOY_HOST'] )
+    source_db = slug( ENV['APP_NAME'], ENV['APP_HOST'] )
+    dest_db = slug( ENV['APP_NAME'], ENV['DEPLOY_HOST'] )
 
-		mysql_migrate(source_db, dest_db)
-	end
+    mysql_migrate(source_db, dest_db)
+  end
 
-	desc "db_pull", "Pull the DEPLOY_HOST database to the APP_HOST database"
-	def db_pull
-		return unless env_APP_NAME
-		return unless env_APP_HOST
-		return unless env_DEPLOY_HOST
+  desc "db_pull", "Pull the DEPLOY_HOST database to the APP_HOST database"
+  def db_pull
+    return unless env_APP_NAME
+    return unless env_APP_HOST
+    return unless env_DEPLOY_HOST
 
-		source_db = slug( ENV['APP_NAME'], ENV['DEPLOY_HOST'] )
-		dest_db = slug( ENV['APP_NAME'], ENV['APP_HOST'] )
+    source_db = slug( ENV['APP_NAME'], ENV['DEPLOY_HOST'] )
+    dest_db = slug( ENV['APP_NAME'], ENV['APP_HOST'] )
 
-		mysql_migrate(source_db, dest_db)
-	end
+    mysql_migrate(source_db, dest_db)
+  end
 
 end
 MyThorCommand.start
