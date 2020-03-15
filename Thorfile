@@ -345,7 +345,7 @@ class MyThorCommand < Thor
     # Build .env configuration
     dotenv = <<~DOTENV.strip
       # https://#{ENV['APP_NAME']}.#{ENV['APP_HOST']}/wp/wp-login.php
-      # Username: #{ENV['DB_ADMIN_USER']}
+      # Username: nf-#{ENV['APP_NAME']}
       # Password: #{ENV['DB_PASSWORD']}
       APP_NAME=#{ENV['APP_NAME']}
       APP_HOST=#{ENV['APP_HOST']}
