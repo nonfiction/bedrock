@@ -132,6 +132,10 @@ Config::define('DISALLOW_FILE_EDIT', true);
 // Disable plugin and theme updates and installation from the admin
 Config::define('DISALLOW_FILE_MODS', true);
 
+// Query Monitor Settings
+Config::define('QM_DARK_MODE', true);
+Config::define('QM_DISABLE_ERROR_HANDLER', true);
+
 // Debugging Settings
 Config::define('WP_DEBUG_DISPLAY', false);
 Config::define('SCRIPT_DEBUG', false);

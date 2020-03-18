@@ -45,6 +45,12 @@ class MyThorCommand < Thor
       input(key, false)
     end
 
+    def input_as_is(key, echo = true)
+      label = set_color(" #{key} ", :black, :on_green, :bold)
+      response = ask label, :echo => echo
+      response.to_s.strip
+    end
+
     def msg(*text)
       say(text.join(' '), :green)
     end
@@ -281,7 +287,7 @@ class MyThorCommand < Thor
         msg ""
         msg "Enter your S3_UPLOADS_KEY (optional)"
         msg "https://cloud.digitalocean.com/account/api/tokens"
-        ENV[key] = input key
+        ENV[key] = input_as_is key
         did_input = true
       end
       msg_env key unless did_input
@@ -295,7 +301,7 @@ class MyThorCommand < Thor
         msg ""
         msg "Enter your S3_UPLOADS_SECRET (optional)"
         msg "https://cloud.digitalocean.com/account/api/tokens"
-        ENV[key] = input key
+        ENV[key] = input_as_is key
         did_input = true
       end
       msg_env key unless did_input
