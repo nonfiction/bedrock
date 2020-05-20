@@ -235,11 +235,11 @@ class MyThorCommand < Thor
         msg ""
         msg "Enter a DEPLOY_HOST (optional)"
         msg "Example: app1.example.com"
-        deploy_hosts << input(key)
+        deploy_hosts << input(key).strip
       else
-        deploy_hosts << ENV[key]
+        deploy_hosts << ENV[key].strip
       end
-      ENV[key] = deploy_hosts.uniq.join(',').to_s
+      ENV[key] = deploy_hosts.reject(&:empty?).uniq.join(',').to_s  
       msg_env key
       !ENV[key].to_s.empty?
     end
