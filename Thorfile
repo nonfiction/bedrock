@@ -239,7 +239,7 @@ class MyThorCommand < Thor
       else
         deploy_hosts << ENV[key].strip
       end
-      ENV[key] = deploy_hosts.reject(&:empty?).uniq.join(',').to_s  
+      ENV[key] = deploy_hosts.compact.reject(&:empty?).uniq.join(',').to_s  
       msg_env key
       !ENV[key].to_s.empty?
     end
