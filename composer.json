@@ -20,13 +20,7 @@
     "roots/wp-config": "1.0.0",
     "roots/wp-password-bcrypt": "1.0.0",
     "roots/wp-stage-switcher": "^2.1",
-    "cmb2/cmb2": "^2.7",
-    "soberwp/intervention": "^1.2",
-    "timber/timber": "^1.14",
     "humanmade/s3-uploads": "^2.2",
-    "wpackagist-plugin/debug-bar": "^1.0",
-    "wpackagist-plugin/debug-bar-timber": "^0.3.0",
-    "wpackagist-plugin/query-monitor": "^3.5",
     "wpackagist-plugin/stream": "^3.4",
     "nonfiction/site": "dev-master"
   },
@@ -42,7 +36,7 @@
   "prefer-stable": true,
   "extra": {
     "installer-paths": {
-      "web/app/mu-plugins/{$name}/": ["type:wordpress-muplugin", "cmb2/cmb2", "roots/wp-stage-switcher", "humanmade/s3-uploads", "wpackagist-plugin/stream"],
+      "web/app/mu-plugins/{$name}/": ["type:wordpress-muplugin", "roots/wp-stage-switcher", "humanmade/s3-uploads", "wpackagist-plugin/stream"],
       "web/app/plugins/{$name}/": ["type:wordpress-plugin"],
       "web/app/themes/{$name}/": ["type:wordpress-theme"]
     },
