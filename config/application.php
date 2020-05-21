@@ -133,8 +133,8 @@ Config::define('DISALLOW_FILE_EDIT', true);
 Config::define('DISALLOW_FILE_MODS', true);
 
 // Query Monitor Settings
-Config::define('QM_DARK_MODE', env('QM_DARK_MODE') ?: true));
-Config::define('QM_DISABLE_ERROR_HANDLER', env('QM_DISABLE_ERROR_HANDLER') ?: true));
+Config::define('QM_DARK_MODE', env('QM_DARK_MODE') ?: true);
+Config::define('QM_DISABLE_ERROR_HANDLER', env('QM_DISABLE_ERROR_HANDLER') ?: true);
 
 // Debugging Settings
 Config::define('WP_DEBUG_DISPLAY', false);
