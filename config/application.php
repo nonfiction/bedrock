@@ -106,7 +106,8 @@ if (env('S3_UPLOADS_SPACE')) {
   $BUCKET = env('S3_UPLOADS_BUCKET') ?: (env($BUCKET_ENV) ?: $APP_NAME_HOST);
 
   Config::define('S3_UPLOADS_BUCKET', env('S3_UPLOADS_SPACE')."/${BUCKET}");
-  Config::define('S3_UPLOADS_BUCKET_URL', 'https://'.env('S3_UPLOADS_SPACE').'.'.env('S3_UPLOADS_REGION').".digitaloceanspaces.com/${BUCKET}");
+  $BUCKET_URL = env('S3_UPLOADS_CUSTOM_ENDPOINT') ?: 'https://'.env('S3_UPLOADS_SPACE').'.'.env('S3_UPLOADS_REGION').".digitaloceanspaces.com";
+  Config::define('S3_UPLOADS_BUCKET_URL', "${BUCKET_URL}/${BUCKET}");
 
   Config::define('S3_UPLOADS_KEY', env('S3_UPLOADS_KEY'));
   Config::define('S3_UPLOADS_SECRET', env('S3_UPLOADS_SECRET'));

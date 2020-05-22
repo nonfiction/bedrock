@@ -384,6 +384,7 @@ class MyThorCommand < Thor
       S3_UPLOADS_KEY=#{ENV['S3_UPLOADS_KEY']}
       S3_UPLOADS_SECRET=#{ENV['S3_UPLOADS_SECRET']}
       S3_UPLOADS_DISABLE_REPLACE_UPLOAD_URL=false
+      # S3_UPLOADS_CUSTOM_ENDPOINT=
 
       # When S3_UPLOADS_BUCKET is undefined, it's automatically set to "${APP_NAME}_${APP_HOST}"
       # S3_UPLOADS_BUCKET=#{ENV['APP_NAME_HOST']}
