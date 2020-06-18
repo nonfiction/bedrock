@@ -113,6 +113,8 @@ if (env('S3_UPLOADS_SPACE')) {
   Config::define('S3_UPLOADS_SECRET', env('S3_UPLOADS_SECRET'));
 
   Config::define('S3_UPLOADS_DISABLE_REPLACE_UPLOAD_URL', env('S3_UPLOADS_DISABLE_REPLACE_UPLOAD_URL'));
+  Config::define('S3_UPLOADS_AUTOENABLE', env('S3_UPLOADS_AUTOENABLE'));
+
 }
 
 // Authentication Unique Keys and Salts

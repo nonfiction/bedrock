@@ -20,6 +20,9 @@
     "roots/wp-config": "1.0.0",
     "roots/wp-password-bcrypt": "1.0.0",
     "roots/wp-stage-switcher": "^2.1",
+    "icanboogie/inflector": "^2.0",
+    "cmb2/cmb2": "^2.7",
+    "timber/timber": "^1.14",
     "humanmade/s3-uploads": "^2.2",
     "wpackagist-plugin/stream": "^3.4",
     "nonfiction/site": "dev-master"
