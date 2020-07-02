@@ -20,7 +20,9 @@
     "roots/wp-config": "1.0.0",
     "roots/wp-password-bcrypt": "1.0.0",
     "roots/wp-stage-switcher": "^2.1",
+    "soberwp/intervention": "^1.2",
     "icanboogie/inflector": "^2.0",
+    "johnbillion/extended-cpts": "^4.3",
     "cmb2/cmb2": "^2.7",
     "timber/timber": "^1.14",
     "humanmade/s3-uploads": "^2.2",
@@ -39,7 +41,7 @@
   "prefer-stable": true,
   "extra": {
     "installer-paths": {
-      "web/app/mu-plugins/{$name}/": ["type:wordpress-muplugin", "roots/wp-stage-switcher", "humanmade/s3-uploads", "wpackagist-plugin/stream"],
+      "web/app/mu-plugins/{$name}/": ["type:wordpress-muplugin", "roots/wp-stage-switcher"],
       "web/app/plugins/{$name}/": ["type:wordpress-plugin"],
       "web/app/themes/{$name}/": ["type:wordpress-theme"]
     },
