@@ -360,6 +360,9 @@ class MyThorCommand < Thor
       DEPLOY_HOSTS=#{ENV['DEPLOY_HOSTS']}
       DEPLOY_HOST=#{ENV['DEPLOY_HOSTS']}
 
+      # Publically accessible host name                                                                                                                                                             
+      PUBLIC_HOST=
+
       # https://cloud.digitalocean.com/databases
       DB_HOST=#{ENV['DB_HOST']}
       DB_USER=#{ENV['DB_USER']}
