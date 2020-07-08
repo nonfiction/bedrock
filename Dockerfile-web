@@ -87,10 +87,7 @@ RUN set -ex; \
   chmod +x /usr/local/bin/wp;
 
 # Cron
-RUN set -ex; \
-  cron_cmd="cd /srv; /usr/local/bin/wp cron event run --due-now"; \
-  echo "*/5 * * * * $cron_cmd > /dev/null 2>&1" > /etc/cron_wp; \
-  crontab /etc/cron_wp;
+RUN echo "*/5 * * * * root cd /srv && wp cron event run --due-now > /dev/null 2>&1" >> /etc/crontab
 
 # Self-signed certificate for https
 RUN openssl req -x509 -batch -nodes -days 36525 -newkey rsa:2048 -keyout /etc/ssl/private/apache-selfsigned.key -out /etc/ssl/certs/apache-selfsigned.crt
