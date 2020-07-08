@@ -6,6 +6,7 @@ sed -e "s/define('//g" -e "s/','/='/g" -e "s/);//g" /tmp/salts > /srv/salts.env
 
 # Run wp-cron every 5 minutes
 echo "*/5 * * * * root curl https://$APP_NAME.$APP_HOST/wp-cron.php?doing_wp_cron > /dev/null 2>&1" >> /etc/crontab
+service cron start
 
 # Execute run.sh if it exists
 if [ -e /srv/web/app/run.sh ]; then
