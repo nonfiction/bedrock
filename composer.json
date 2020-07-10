@@ -26,7 +26,10 @@
     "cmb2/cmb2": "^2.7",
     "timber/timber": "^1.14",
     "humanmade/s3-uploads": "^2.2",
-    "wpackagist-plugin/stream": "^3.4",
+    "wpackagist-plugin/members": "^3.0",
+    "wpackagist-plugin/safe-redirect-manager": "^1.9",
+    "wpackagist-plugin/stream": "^3.5",
+    "wpackagist-plugin/wp-crontrol": "^1.8",
     "nonfiction/site": "dev-master"
   },
   "require-dev": {
