@@ -4,10 +4,14 @@ FROM mysql:latest
 RUN set -ex; \
   apt-get update; \
   apt-get install -y --no-install-recommends \
-    curl \
     less \
+    curl \
+    rsync \
+    openssh-client \
+    ca-certificates \
     dialog \
-    ruby \
+    ruby; \
+  update-ca-certificates \
   ;
 
 # Thor

@@ -40,3 +40,9 @@ services:
       context: .
       dockerfile: Dockerfile-env
     image: nonfiction/bedrock:env
+
+  rsync:
+    build:
+      context: .
+      dockerfile: Dockerfile-rsync
+    image: nonfiction/bedrock:rsync
