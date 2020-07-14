@@ -75,7 +75,7 @@ class MyThorCommand < Thor
         '15 40 4'
       ]
       opts = choices.map.with_index do |choice, index|
-        "#{index + 1} \"#{choice}\""	
+        "#{index + 1} \"#{choice}\""
       end
       chosen_index = cli("dialog #{args.join(' ')} #{opts.join(' ')}", false)
       return chosen_index.to_i - 1
@@ -122,25 +122,48 @@ class MyThorCommand < Thor
       return cli("#{base} \"#{command}\"", false)
     end
 
+
     def mysql_migrate(source_db, dest_db, echo = true)
 
+      # Ensure source_db and dest_db are not both .sql files
+      if (source_db.include? ".sql" and dest_db.include? ".sql")
+        say("#{set_color(' > ', :black, :on_yellow, :bold)} #{set_color("Source and destination cannot both be *.sql files", :yellow)}")
+        return false
+      end
+
+      # Ensure source_db and dest_db do not match
       if (source_db == dest_db)
         say("#{set_color(' > ', :black, :on_yellow, :bold)} #{set_color("Databases match", :yellow)}")
         return false
       end
 
-      say("#{set_color(' > ', :black, :on_yellow, :bold)} #{set_color("#{source_db} -> #{dest_db}", :yellow)}") if echo
+      say("#{set_color(' > ', :black, :on_yellow, :bold)} #{set_color("#{source_db.gsub('/srv/','')} -> #{dest_db.gsub('/srv/','')}", :yellow)}") if echo
 
       user = ENV['DB_USER']
       pass = ENV['DB_PASSWORD']
       host = ENV['DB_HOST'].split(':')[0]
       port = ENV['DB_HOST'].split(':')[1]
 
-      # mysqldump -u user --password=pass live_db_name | mysql -u user --password=pass -h localhost duplicate_db_name
-      export = "mysqldump -h#{host} -P#{port} -u#{user} -p#{pass} #{source_db}"
-      import = "mysql -h#{host} -P#{port} -u#{user} -p#{pass} #{dest_db}"
-      say "#{export} | #{import}"
-      return cli("#{export} | #{import}", false)
+      # Commands with credentials ready
+      mysql = "mysql -h#{host} -P#{port} -u#{user} -p#{pass}"
+      mysqldump = "mysqldump -h#{host} -P#{port} -u#{user} -p#{pass} --set-gtid-purged=OFF"
+
+      # Perform an SQL import from source_db file.sql to dest_db database
+      if source_db.include? ".sql"
+        say("#{set_color(' > ', :black, :on_yellow, :bold)} #{set_color("IMPORTING...", :yellow)}")
+        return cli( "#{mysql} #{dest_db} < #{source_db}", false )
+      end
+
+      # Perform an SQL export from source_db database to dest_db file.sql
+      if dest_db.include? ".sql"
+        say("#{set_color(' > ', :black, :on_yellow, :bold)} #{set_color("EXPORTING...", :yellow)}")
+        return cli( "#{mysqldump} #{source_db} > #{dest_db}", false )
+      end
+
+      # Perform an SQL export from source_db database to dest_db database
+      say("#{set_color(' > ', :black, :on_yellow, :bold)} #{set_color("MIGRATING...", :yellow)}")
+      return cli( "#{mysqldump} #{source_db} | #{mysql} #{dest_db}", false )
+
     end
 
 
@@ -313,7 +336,7 @@ class MyThorCommand < Thor
 
   desc "list", "List Commands"
   def list
-    puts "dotenv db_create choose_remote"
+    puts "dotenv deploy_host db_create db_export db_import db_push db_pull"
   end
 
 
@@ -418,6 +441,27 @@ class MyThorCommand < Thor
   end
 
 
+  desc "deploy_host", "Choose deploy host"
+  def deploy_host
+    return unless env_APP_HOST
+    return unless env_DEPLOY_HOSTS
+
+    deploy_hosts = ENV['DEPLOY_HOSTS'].split(',').uniq - ['']
+    index = 0
+    index = choose("Choose deploy host:", deploy_hosts) if deploy_hosts.length > 1
+
+    deploy_host = deploy_hosts[index]
+    ENV['DEPLOY_HOST'] = deploy_host.split('@').last
+
+    if File.file? '.env'
+      env = File.read('.env')
+      env.gsub!(/^DEPLOY_HOST=(.*)$/, "DEPLOY_HOST=#{ENV['DEPLOY_HOST']}")
+      msg "Updating .env with new DEPLOY_HOST: #{ENV['DEPLOY_HOST']}"
+      create_file '.env', env, :force => true
+    end
+  end
+
+
   desc "db_create", "Creates databases and user"
   def db_create
     say bold("DB CREATE")
@@ -467,27 +511,46 @@ class MyThorCommand < Thor
       mysql "GRANT ALL ON #{db_name}.* TO '#{ENV['DB_ADMIN_USER']}'@'%';"
     end
   end
+  
 
 
-  desc "deploy_host", "Choose deploy host"
-  def deploy_host
+  desc "db_export", "Export from the APP_HOST database to the data directory"
+  def db_export
+    return unless env_APP_NAME
     return unless env_APP_HOST
-    return unless env_DEPLOY_HOSTS
+    return unless env_DEPLOY_HOST
 
-    deploy_hosts = ENV['DEPLOY_HOSTS'].split(',').uniq - ['']
-    index = 0
-    index = choose("Choose deploy host:", deploy_hosts) if deploy_hosts.length > 1
+    db = slug( ENV['APP_NAME'], ENV['APP_HOST'] )
+    db_file = "data/#{db}.sql"
 
-    deploy_host = deploy_hosts[index]
-    ENV['DEPLOY_HOST'] = deploy_host.split('@').last
+    mysql_migrate( db, db_file )
+  end
 
-    if File.file? '.env'
-      env = File.read('.env')
-      env.gsub!(/^DEPLOY_HOST=(.*)$/, "DEPLOY_HOST=#{ENV['DEPLOY_HOST']}")
-      msg "Updating .env with new DEPLOY_HOST: #{ENV['DEPLOY_HOST']}"
-      create_file '.env', env, :force => true
+  
+  desc "db_import", "Import from the data directory to the APP_HOST database"
+  def db_import
+    return unless env_APP_NAME
+    return unless env_APP_HOST
+    return unless env_DEPLOY_HOST
+
+    db_files = Dir.glob("data/*.sql")
+    if db_files.size < 1
+      say("#{set_color(' > ', :black, :on_yellow, :bold)} #{set_color("No SQL files found!", :yellow)}")
+      return false
+    end
+
+    index = choose("Choose SQL file to import:", db_files)
+    if (index >= 0)
+
+      db_file = "/srv/#{db_files[index]}"
+      db = slug( ENV['APP_NAME'], ENV['APP_HOST'] )
+
+      mysql_migrate( db_file, db )
+      File.delete( db_file )
+
     end
   end
+
 
   desc "db_push", "Push the APP_HOST database to the DEPLOY_HOST database"
   def db_push
@@ -501,6 +564,7 @@ class MyThorCommand < Thor
     mysql_migrate(source_db, dest_db)
   end
 
+
   desc "db_pull", "Pull the DEPLOY_HOST database to the APP_HOST database"
   def db_pull
     return unless env_APP_NAME
@@ -511,6 +575,15 @@ class MyThorCommand < Thor
     dest_db = slug( ENV['APP_NAME'], ENV['APP_HOST'] )
 
     mysql_migrate(source_db, dest_db)
+  end
+
+
+  desc "test", "test"
+  def test( x = false )
+    index = choose("Choose one:", ['Howdy',"Y'all"])
+    puts index
+    puts x
+    cli("touch /srv/data/#{x}.txt")
   end
 
 end
