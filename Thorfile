@@ -109,6 +109,21 @@ class MyThorCommand < Thor
       return out
     end
 
+    # rsync base command
+    def rsync(src, dest, echo = true)
+      command = "rsync -az --delete #{src} #{dest}"
+      say( "#{set_color(' > ', :black, :on_magenta, :bold)} #{set_color(command, :magenta)}" ) if echo
+      return cli( command, false )
+    end
+
+    # chown back to user
+    def chown(path, echo = true)
+      return if ENV['UID'].to_s.empty?
+      command = "chown -R #{ENV['UID']}:#{ENV['UID']} #{path}"
+      say( "#{set_color(' > ', :black, :on_magenta, :bold)} #{set_color(command, :magenta)}" ) if echo
+      return cli( command, false )
+    end
+
     # MySQL base command
     def mysql(command, echo = true)
       say("#{set_color(' > ', :black, :on_yellow, :bold)} #{set_color(command, :yellow)}") if echo
@@ -137,7 +152,7 @@ class MyThorCommand < Thor
         return false
       end
 
-      say("#{set_color(' > ', :black, :on_yellow, :bold)} #{set_color("#{source_db.gsub('/srv/','')} -> #{dest_db.gsub('/srv/','')}", :yellow)}") if echo
+      # say("#{set_color(' > ', :black, :on_yellow, :bold)} #{set_color("#{source_db.gsub('/srv/','')} -> #{dest_db.gsub('/srv/','')}", :yellow)}") if echo
 
       user = ENV['DB_USER']
       pass = ENV['DB_PASSWORD']
@@ -150,20 +165,19 @@ class MyThorCommand < Thor
 
       # Perform an SQL import from source_db file.sql to dest_db database
       if source_db.include? ".sql"
-        say("#{set_color(' > ', :black, :on_yellow, :bold)} #{set_color("IMPORTING...", :yellow)}")
-        return cli( "#{mysql} #{dest_db} < #{source_db}", false )
-      end
+        command = "#{mysql} #{dest_db} < #{source_db}"
 
       # Perform an SQL export from source_db database to dest_db file.sql
-      if dest_db.include? ".sql"
-        say("#{set_color(' > ', :black, :on_yellow, :bold)} #{set_color("EXPORTING...", :yellow)}")
-        return cli( "#{mysqldump} #{source_db} > #{dest_db}", false )
-      end
+      elsif dest_db.include? ".sql"
+        command = "#{mysqldump} #{source_db} > #{dest_db}"
 
       # Perform an SQL export from source_db database to dest_db database
-      say("#{set_color(' > ', :black, :on_yellow, :bold)} #{set_color("MIGRATING...", :yellow)}")
-      return cli( "#{mysqldump} #{source_db} | #{mysql} #{dest_db}", false )
+      else
+        command = "#{mysqldump} #{source_db} | #{mysql} #{dest_db}"
+      end
 
+      say( "#{set_color(' > ', :black, :on_yellow, :bold)} #{set_color(command, :yellow)}" ) if echo
+      return cli( command, false )
     end
 
 
@@ -336,7 +350,20 @@ class MyThorCommand < Thor
 
   desc "list", "List Commands"
   def list
-    puts "dotenv deploy_host db_create db_export db_import db_push db_pull"
+    puts "dotenv"
+    puts "deploy_host"
+    puts "create_db"
+    puts "export_db"
+    puts "import_db"
+    puts "push_db"
+    puts "pull_db"
+    puts "import_files"
+    puts "export_files"
+    puts "volume_to_host"
+    puts "host_to_volume"
+    puts "volume_to_deploy"
+    puts "deploy_to_volume"
+    puts "clean_host"
   end
 
 
@@ -462,9 +489,9 @@ class MyThorCommand < Thor
   end
 
 
-  desc "db_create", "Creates databases and user"
-  def db_create
-    say bold("DB CREATE")
+  desc "create_db", "Creates databases and user"
+  def create_db
+    say bold("CREATE DB")
 
     return unless env_DB_HOST
     return unless env_DB_ROOT_USER
@@ -514,26 +541,30 @@ class MyThorCommand < Thor
   
 
 
-  desc "db_export", "Export from the APP_HOST database to the data directory"
-  def db_export
+  desc "export_db", "Export from the APP_HOST database to the data directory"
+  def export_db
+    say bold("EXPORT DB: data directory <== database")
     return unless env_APP_NAME
     return unless env_APP_HOST
     return unless env_DEPLOY_HOST
 
     db = slug( ENV['APP_NAME'], ENV['APP_HOST'] )
-    db_file = "data/#{db}.sql"
+    db_file = "/srv/data/#{Time.now.utc.strftime("%Y%m%d-%H%M%S")}.sql"
 
     mysql_migrate( db, db_file )
+    chown db_file
   end
 
   
-  desc "db_import", "Import from the data directory to the APP_HOST database"
-  def db_import
+  desc "import_db", "Import from the data directory to the APP_HOST database"
+  def import_db
+    say bold("IMPORT DB: data directory ==> database")
     return unless env_APP_NAME
     return unless env_APP_HOST
     return unless env_DEPLOY_HOST
 
-    db_files = Dir.glob("data/*.sql")
+    Dir.chdir('/srv/data')
+    db_files = Dir.glob("*.sql")
     if db_files.size < 1
       say("#{set_color(' > ', :black, :on_yellow, :bold)} #{set_color("No SQL files found!", :yellow)}")
       return false
@@ -542,21 +573,21 @@ class MyThorCommand < Thor
     index = choose("Choose SQL file to import:", db_files)
     if (index >= 0)
 
-      db_file = "/srv/#{db_files[index]}"
+      db_file = "/srv/data/#{db_files[index]}"
       db = slug( ENV['APP_NAME'], ENV['APP_HOST'] )
 
       mysql_migrate( db_file, db )
-      File.delete( db_file )
 
     end
   end
 
 
-  desc "db_push", "Push the APP_HOST database to the DEPLOY_HOST database"
-  def db_push
+  desc "push_db", "Push the APP_HOST database to the DEPLOY_HOST database"
+  def push_db
     return unless env_APP_NAME
     return unless env_APP_HOST
     return unless env_DEPLOY_HOST
+    say bold("PUSH DB: #{ENV['APP_HOST']} ==> #{ENV['DEPLOY_HOST']}")
 
     source_db = slug( ENV['APP_NAME'], ENV['APP_HOST'] )
     dest_db = slug( ENV['APP_NAME'], ENV['DEPLOY_HOST'] )
@@ -565,11 +596,12 @@ class MyThorCommand < Thor
   end
 
 
-  desc "db_pull", "Pull the DEPLOY_HOST database to the APP_HOST database"
-  def db_pull
+  desc "pull_db", "Pull the DEPLOY_HOST database to the APP_HOST database"
+  def pull_db
     return unless env_APP_NAME
     return unless env_APP_HOST
     return unless env_DEPLOY_HOST
+    say bold("PULL DB: #{ENV['APP_HOST']} <== #{ENV['DEPLOY_HOST']}")
 
     source_db = slug( ENV['APP_NAME'], ENV['DEPLOY_HOST'] )
     dest_db = slug( ENV['APP_NAME'], ENV['APP_HOST'] )
@@ -578,12 +610,68 @@ class MyThorCommand < Thor
   end
 
 
-  desc "test", "test"
-  def test( x = false )
-    index = choose("Choose one:", ['Howdy',"Y'all"])
-    puts index
-    puts x
-    cli("touch /srv/data/#{x}.txt")
+  desc "import_files", "Import from the data directory to the APP_HOST volume"
+  def import_files
+
+    Dir.chdir('/srv/data')
+    data_dirs = Dir.glob('*').select {|f| File.directory? f}
+    if data_dirs.size < 1
+      say("#{set_color(' > ', :black, :on_magenta, :bold)} #{set_color("No directories found!", :magenta)}")
+      return false
+    end
+
+    index = choose("Choose directory to import:", data_dirs)
+    if (index >= 0)
+
+      say bold("IMPORT FILES: data directory => container volume")
+      data_dir = "/srv/data/#{data_dirs[index]}"
+      rsync data_dir, "/uploads"
+
+    end
+  end
+
+  desc "export_files", "Export from the APP_HOST volume to the data directory"
+  def export_files
+    say bold("EXPORT FILES: data directory <== container volume")
+    data_dir = "/srv/data/#{Time.now.utc.strftime("%Y%m%d-%H%M%S")}/"
+    rsync "/uploads/", data_dir
+    chown data_dir
+  end
+
+  desc "volume_to_host", "Move from the volume to the tmp directory on the host"
+  def volume_to_host
+    say bold("VOLUME TO HOST: container volume ==> host directory")
+    rsync "/uploads/", "/host/"
+  end
+
+  desc "host_to_volume", "Move from the tmp directory on the host to the volume"
+  def host_to_volume
+    say bold("HOST TO VOLUME: container volume <== host directory")
+    rsync "/host/", "/uploads/"
+  end
+
+  desc "volume_to_deploy", "Copy from the volume to the remote tmp directory"
+  def volume_to_deploy
+    return unless env_DEPLOY_HOST
+    return unless env_APP_NAME
+    say bold("VOLUME TO DEPLOY: container volume ==> host directory")
+    rsync "/uploads/", "root@#{ENV['DEPLOY_HOST']}:/tmp/#{ENV['APP_NAME']}/uploads/"
+  end
+
+  desc "deploy_to_volume", "Copy from the remote tmp directory to the volume"
+  def deploy_to_volume
+    return unless env_DEPLOY_HOST
+    return unless env_APP_NAME
+    say bold("DEPLOY TO VOLUME: container volume <== deploy host directory")
+    rsync "root@#{ENV['DEPLOY_HOST']}:/tmp/#{ENV['APP_NAME']}/uploads/", "/uploads/"
+  end
+
+  desc "clean_host", "Free disk space on the host tmp directory"
+  def clean_host
+    say bold("CLEAN HOST: host directory emptied")
+    command = "rm -rf /host/*"
+    say( "#{set_color(' > ', :black, :on_magenta, :bold)} #{set_color(command, :magenta)}" )
+    return cli( command, false )
   end
 
 end
