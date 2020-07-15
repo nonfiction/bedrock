@@ -624,8 +624,8 @@ class MyThorCommand < Thor
     if (index >= 0)
 
       say bold("IMPORT FILES: data directory => container volume")
-      data_dir = "/srv/data/#{data_dirs[index]}"
-      rsync data_dir, "/uploads"
+      data_dir = "/srv/data/#{data_dirs[index]}/"
+      rsync data_dir, "/uploads/"
 
     end
   end
