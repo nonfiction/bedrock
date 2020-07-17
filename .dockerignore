@@ -1,32 +1,9 @@
-# Application
-web/app/*
-!web/app/uploads/.gitkeep
-!web/app/themes/.gitkeep
-!web/app/plugins/.gitkeep
-!web/app/mu-plugins/bedrock-autoloader.php
-!web/app/mu-plugins/register-theme-directory.php
-
-# WordPress
-web/wp
-web/.htaccess
-
-# Git
-.git
-.gitignore
-
-# Composer
-vendor
-composer.lock
-
-# Docker
-.dockerignore
-Dockerfile-*
-
-# Dotenv
+*.log
 .env
-
-# Other
-Makefile
-README.md
-wp-cli.local.yml
+.git
+data
+node_modules
+.cache-loader
+vendor
 scratch
+bedrock

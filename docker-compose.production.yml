@@ -1,0 +1,17 @@
+# docker-compose.production.yml (override)
+version: "3.7"
+services:
+
+  # Bedrock WordPress on Apache
+  srv:
+    networks:
+      - traefik
+    environment:
+      WP_ENV: production
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.${APP_NAME}.rule=Host(`${APP_NAME}.${APP_HOST}`,`${PUBLIC_HOST}`)"
+      - "traefik.http.routers.${APP_NAME}.entrypoints=websecure"
+      - "traefik.http.routers.${APP_NAME}.tls.certresolver=digitalocean"
+      - "traefik.http.services.${APP_NAME}.loadbalancer.server.port=443"
+      - "traefik.http.services.${APP_NAME}.loadbalancer.server.scheme=https"

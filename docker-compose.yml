@@ -1,48 +1,69 @@
+# docker-compose.yml (base)
 version: "3.7"
+services:
+  
+  # Bedrock WordPress on Apache
+  srv:
+    build: .
+    image: nonfiction/bedrock:latest
+    env_file: .env
+    environment:
+      - APP_HOST
+    volumes:
+      - type: volume
+        source: uploads
+        target: /srv/web/app/uploads
+    expose: 
+      - 443
 
+  # WP-CLI
+  wp:
+    image: nonfiction/bedrock:latest
+    env_file: .env
+    environment:
+      - APP_HOST
+    entrypoint: /usr/local/bin/wp
+    working_dir: /srv 
+    command: 'core version'
+    volumes:
+      - type: volume
+        source: uploads
+        target: /srv/web/app/uploads
+
+  # Webpack Dev Server
+  dev:
+    image: nonfiction/bedrock:dev
+    working_dir: /srv/web/app/site
+    command: webpack-dev-server --hide-modules --hot
+    volumes:
+      - type: bind
+        source: ./site
+        target: /srv/web/app/site
+      - type: volume
+        source: node_modules
+        target: /srv/web/app/site/node_modules
+    expose:
+      - 443
+
+  # Manage files and databases
+  env:
+    image: nonfiction/bedrock:env
+    env_file: .env
+    volumes:
+      - type: volume
+        source: uploads
+        target: /uploads
+      - type: bind
+        source: /tmp/${APP_NAME}/uploads
+        target: /host
+
+# traefik reverse-proxy defined by docker-host 
 networks:
   traefik:
     name: traefik
     external: true
 
-services:
-  web:
-    build:
-      context: .
-      dockerfile: Dockerfile-web
-    image: nonfiction/bedrock:web
-    env_file: .env
-    environment:
-      WP_ENV: development
-    volumes:
-      - type: bind
-        source: .
-        target: /srv
-        read_only: true
-      - type: bind
-        source: ./config/vhost.conf
-        target: /etc/apache2/sites-available/000-default.conf
-        read_only: true
-    expose:
-      - 80
-      - 443
-    networks:
-      - traefik
-
-  dev:
-    build:
-      context: .
-      dockerfile: Dockerfile-dev
-    image: nonfiction/bedrock:dev
-
-  env:
-    build:
-      context: .
-      dockerfile: Dockerfile-env
-    image: nonfiction/bedrock:env
-
-  sync:
-    build:
-      context: .
-      dockerfile: Dockerfile-sync
-    image: nonfiction/bedrock:sync
+# speed up build times by storing packages, persist uploads
+volumes:
+  uploads:
+  node_modules:

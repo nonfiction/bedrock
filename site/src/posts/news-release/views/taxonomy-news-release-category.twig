@@ -1,0 +1,38 @@
+{% set template = 'news-release' %} 
+{% extends "base.twig" %}
+
+
+{% block content %}
+<section id="content" role="main" class="content">
+  <div class="content__container content__container--with-sidebar">
+
+    <aside class="side">
+      {% include 'partial/sidebar-news-release.twig' %}
+    </aside>
+
+    <article class="main post-type-{{post.post_type}}" id="post-{{post.ID}}">
+      <div class="news-items listing-items">
+        {% for news in posts|slice(0,4)  %} 
+          {% include 'partial/tease-news-release.twig' %}
+        {% endfor %}
+      </div>
+
+      {% if posts.length > 4  %} 
+      <div class="more-button__container">
+        <a class="more-button" href="#">Load more news releases</a>
+      </div>
+      <div class="more-button--hidden">
+        <br>
+        <div class="news-items listing-items">
+          {% for news in posts|slice(4)  %} 
+            {% include 'partial/tease-news-release.twig' %}
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+
+    </article>
+
+  </div>
+</section>
+{% endblock %}

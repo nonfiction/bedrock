@@ -1,0 +1,38 @@
+version: "3.7"
+
+services:
+  srv:
+    volumes:
+      - type: bind
+        source: ./bedrock/srv/config/vhost.conf
+        target: /etc/apache2/sites-available/000-default.conf
+      - type: bind
+        source: ./bedrock/srv/run.sh
+        target: /bin/run.sh
+      - type: bind
+        source: ./bedrock/srv/composer.json
+        target: /srv/composer.json
+      - type: bind
+        source: ./bedrock/srv/wp-cli.yml
+        target: /srv/wp-cli.yml
+      - type: bind
+        source: ./bedrock/srv/config
+        target: /srv/config
+      - type: bind
+        source: ./bedrock/srv/web/index.php
+        target: /srv/web/index.php
+      - type: bind
+        source: ./bedrock/srv/web/wp-config.php
+        target: /srv/web/wp-config.php
+      - type: bind
+        source: ./bedrock/srv/web/app/mu-plugins/bedrock-autoloader.php
+        target: /srv/web/app/mu-plugins/bedrock-autoloader.php
+      - type: bind
+        source: ./bedrock/srv/web/app/mu-plugins/register-theme-directory.php
+        target: /srv/web/app/mu-plugins/register-theme-directory.php
+
+  env:
+    volumes:
+      - type: bind
+        source: ./bedrock/env/Thorfile
+        target: /bin/tasks

@@ -1,0 +1,20 @@
+.wp-block-file {
+  margin-bottom: 30px;
+}
+
+.wp-block-file a {
+  color: #AF5E23;
+  text-decoration-color: #AF5E23;
+}
+
+.wp-block-file .wp-block-file__button {
+  display: inline-block;
+  font-weight: 800;
+  text-transform: uppercase;
+  background: #FFB040;
+  color: #fff;
+  border-radius: 25px;
+  font-size: 14px;
+  padding: 10px 20px;
+  text-decoration: none;
+}

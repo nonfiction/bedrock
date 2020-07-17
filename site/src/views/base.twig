@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<!--[if lt IE 9]><html class="no-js no-svg ie lt-ie9 lt-ie8 lt-ie7" {{ site.language_attributes }}> <![endif]-->
+<!--[if IE 9]><html class="no-js no-svg ie ie9 lt-ie9 lt-ie8" {{ site.language_attributes }}> <![endif]-->
+<!--[if gt IE 9]><!--><html class="no-js no-svg" {{ site.language_attributes }}> <!--<![endif]-->
+  <head>
+    {% block head %}
+    <meta charset="{{ site.charset }}" />
+    <meta name="description" content="{{ site.description }}">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {{function('wp_head')}}
+    {% endblock %}
+  </head>
+
+  <body class="{{body_class}}" data-template="{{template|default('base')}}">
+
+    {% block preamble %}
+    <div id="top"></div>
+    <a class="skip-link screen-reader-text" href="#content">{{ _e( 'Skip to content') }}</a>
+    <div id="preload"></div>
+    {% endblock %}
+
+    <div class="layout">
+
+    {% block navbar %}
+    <nav id="primary" class="navbar" role="navigation">
+      <div class="navbar__group">
+        <div class="navbar__logo">
+          <a href="/" title="{{ site.title }}" rel="home" class="logo">
+            <img class="svg navbar__logo" src="{{ img }}/logo.jpg" alt="Logo">
+          </a>
+        </div>
+        <div class="navbar__hamburger">
+          <button class="hamburger hamburger--squeeze" type="button">
+            <span class="hamburger-box">
+              <span class="hamburger-inner"></span>
+            </span>
+          </button>
+        </div>
+      </div>
+      <div class="navbar__menu">
+        {% include "partial/menu.twig" with {'items': primary_menu.get_items} %}
+      </div>
+    </nav>
+    {% endblock %}
+
+
+    {% block content %}
+    <section id="main" role="main" class="main">
+      <div class="content__container">
+        <article class="content post-type-{{post.post_type}}" id="post-{{post.ID}}">
+          <img src="https://unsplash.it/900/200">
+          {{post.content}}
+        </article>
+      </div>
+    </section>
+    {% endblock %}
+
+
+    </div>
+
+    {% block footer_nav %}
+    <footer id="footer" class="footer" role="navigation">
+      <div class="footer__container">
+        <div class="footer__copyright">
+          &copy; {{ "now"|date("Y") }} {{ site.title }}
+        </div>
+      </div>
+    </footer>
+    {% endblock %}
+
+
+    {% block footer %}
+    {{ function('wp_footer') }}
+    {% endblock %}
+
+
+  </body>
+</html>

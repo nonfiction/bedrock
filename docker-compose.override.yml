@@ -1,0 +1,42 @@
+# docker-compose.override.yml (dev)
+version: "3.7"
+services:
+
+  # WordPress on backend (from base) in development mode
+  srv:
+    networks:
+      - backend
+    environment:
+      WP_ENV: development
+    volumes:
+      - type: bind
+        source: ./site
+        target: /srv/web/app/site
+
+  # Webpack Dev Server
+  dev:
+    depends_on: 
+      - srv
+    networks:
+      - backend
+      - traefik
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.${APP_NAME}.rule=Host(`${APP_NAME}.${APP_HOST}`)"
+      - "traefik.http.routers.${APP_NAME}.entrypoints=websecure"
+      - "traefik.http.routers.${APP_NAME}.tls.certresolver=digitalocean"
+      - "traefik.http.services.${APP_NAME}.loadbalancer.server.port=443"
+      - "traefik.http.services.${APP_NAME}.loadbalancer.server.scheme=https"
+
+  # Manage files and databases
+  env:
+    volumes:
+      - type: bind
+        source: .
+        target: /srv
+      - type: bind
+        source: ${HOME}/.ssh
+        target: /root/.ssh
+
+networks:
+  backend:

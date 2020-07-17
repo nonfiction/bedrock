@@ -1,0 +1,30 @@
+h2 {
+  font-weight: 800;
+  font-size: 54px;
+  margin: 0;
+  color: #4B190F;
+  margin: 20px 0 20px;
+  line-height: 1;
+}
+
+h3 {
+  font-size: 20px;
+  /* color: #4B190F; */
+  color: #AF5E23;
+  font-weight: 800;
+  margin: 0 0 15px 0;
+}
+
+h4 {
+  font-size: 10px;
+  font-weight: 800;
+  color: #AF5E23;
+  margin: 5px 0;
+  text-transform: uppercase;
+}
+
+article > h2:first-child,
+article > h3:first-child,
+article > h4:first-child {
+  margin-top: 0;
+}

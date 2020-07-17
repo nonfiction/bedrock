@@ -1,0 +1,35 @@
+p {
+  font-size: 16px;
+  line-height: 26px;
+  color: #3E3E3E;
+  margin: 0 0 15px 0;
+  max-width: 80ch;
+}
+
+p.is-style-intro, .intro {
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 26px;
+  margin: 0 0 30px 0;
+  color: #AF5E23;
+}
+
+p strong, p b {
+  font-weight: 800;
+}
+
+p a {
+  color: #AF5E23;
+  text-decoration-color: #AF5E23;
+  transition: color 0.3s;
+}
+
+p a:hover {
+  color: #e3890b;
+  text-decoration-color: #e3890b;
+}
+
+article > p:first-child {
+  margin-top: 0;
+}
+

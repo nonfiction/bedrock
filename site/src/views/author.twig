@@ -1,0 +1,8 @@
+{% set template = 'author' %} 
+{% extends "base.twig" %}
+
+{% block content %}
+  {% for post in posts %}
+    {% include ["partial/tease-"~post.post_type~".twig", "partial/tease.twig"] %}
+  {% endfor %}
+{% endblock %}

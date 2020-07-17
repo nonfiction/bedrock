@@ -1,0 +1,17 @@
+version: "3.7"
+
+services:
+  srv:
+    build:
+      context: ./srv
+    image: nonfiction/bedrock:srv
+
+  dev:
+    build:
+      context: ./dev
+    image: nonfiction/bedrock:dev
+
+  env:
+    build:
+      context: ./env
+    image: nonfiction/bedrock:env

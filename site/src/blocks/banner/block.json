@@ -1,0 +1,31 @@
+{
+  "title": "Banner",
+  "icon": "money",
+  "category": "common",
+
+  "supports": {
+     "align": false,
+     "html": false
+  },
+
+  "attributes": {
+    "align":          { "type": "string", "default": "full" },
+    "heading":        { "type": "string" },
+    "content":        { "type": "string" },
+    "background_id":  { "type": "integer" }, 
+    "background_url": { "type": "string" }
+  },
+
+  "example": {
+    "attributes": {
+      "heading": "Hello World",
+      "content": "What a wonderful day!"
+    }
+  },
+
+  "meta": [
+    { "key": "foo", "type": "string" },
+    { "key": "bar", "type": "integer" }
+  ]
+
+}

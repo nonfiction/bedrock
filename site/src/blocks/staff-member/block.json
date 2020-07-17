@@ -1,0 +1,29 @@
+{
+  "title": "Staff Member",
+  "icon": "money",
+  "category": "common",
+
+  "supports": {
+     "align": false,
+     "html": true
+  },
+
+  "attributes": {
+    "name":        { "type": "string" },
+    "title":        { "type": "string" },
+    "linkedin":        { "type": "string" },
+    "email":        { "type": "string" },
+    "content":        { "type": "string" },
+    "photo_id":  { "type": "integer" }, 
+    "photo_url":   { "type": "string" }
+  },
+
+  "example": {
+    "attributes": {
+      "name": "Firstname Lastname",
+      "title": "Director",
+      "content": "My biography"
+    }
+  }
+
+}

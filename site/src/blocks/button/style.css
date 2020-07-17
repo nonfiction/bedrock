@@ -1,0 +1,48 @@
+.wp-block-buttons .wp-block-button {
+  margin-bottom: 30px;
+}
+
+.wp-block-button__link {
+  display: inline-block;
+  font-weight: 800;
+  text-transform: uppercase;
+  background: #FFB040;
+  color: #fff;
+  border-radius: 25px;
+  font-size: 14px;
+  padding: 10px 20px;
+  text-decoration: none;
+}
+
+.wp-block-button.is-style-download .wp-block-button__link {
+/* .is-style-download .wp-block-button__link { */
+  /* background: #AF5E23; */
+  font-size: 11px;
+  font-weight: 800;
+  background: #AF5E23 url(./download.svg) no-repeat;
+  background-position: right 20px center;
+  padding-right: 40px;
+  
+}
+
+
+
+
+.block-editor-block-styles .wp-block-button__link{
+  display: inline-block !important;
+  font-weight: 800 !important;
+  text-transform: uppercase !important;
+  background: #FFB040 !important;
+  color: #fff !important;
+  border-radius: 25px !important;
+  font-size: 14px !important;
+  padding: 10px 20px !important;
+  text-decoration: none !important;
+}
+
+
+.block-editor-block-styles .is-style-download .wp-block-button__link {
+  background: #AF5E23 !important;
+  font-size: 11px !important;
+  font-weight: 800 !important;
+}

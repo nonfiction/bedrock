@@ -1,0 +1,36 @@
+li {
+  font-size: 16px;
+  line-height: 26px;
+  color: #3E3E3E;
+  margin: 0 0 15px 0;
+}
+
+li strong, li b {
+  font-weight: 800;
+}
+
+li a {
+  color: #AF5E23;
+  text-decoration-color: #AF5E23;
+}
+
+article > ul:first-child,
+article > ol:first-child {
+  margin-top: 0;
+}
+
+
+.wp-block[data-type="core/list"] ul,
+.wp-block[data-type="core/list"] ol {
+  list-style: initial;
+  padding: initial;
+  margin: initial;
+}
+
+.wp-block[data-type="core/list"] li {
+  display: list-item;
+  list-style-type: initial;
+  padding: initial;
+  margin: initial;
+}
+

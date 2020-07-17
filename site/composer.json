@@ -1,0 +1,24 @@
+{
+  "name": "nonfiction/site",
+  "type": "project",
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "https://wpackagist.org"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "nf\\": "src/classes/"
+    }
+  },
+  "require": {
+    "wpackagist-plugin/imsanity": "^2.6",
+    "wpackagist-plugin/debug-bar": "^1.0",
+    "wpackagist-plugin/disable-comments": "^1.10",
+    "wpackagist-plugin/query-monitor": "^3.5",
+    "wpackagist-plugin/torro-forms": "^1.0",
+    "wpackagist-plugin/user-switching": "^1.5",
+    "wpackagist-plugin/members": "^3.0"
+  }
+}

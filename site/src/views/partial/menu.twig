@@ -1,0 +1,14 @@
+<ul class="nav-menu">
+
+{% for item in items %}
+<li class="{{ item.class }}{% if item.link == post.link %} current{% endif %}">
+    <a id="menu-{{ item.id }}" {% if item.target %}target="{{ item.target }}"{% endif %} href="{{ item.link }}">
+      <span>{{ item.title }}</span>
+    </a>
+    {% if item.children %}
+      {% include "partial/menu.twig" with {'items': item.children} %}
+    {% endif %}
+  </li>
+{% endfor %}
+
+</ul>
