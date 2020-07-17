@@ -1,10 +1,7 @@
-html { height: 100%; }
-
 body {
   font-family: 'Nunito Sans', sans-serif;
   padding: 0 !important;
-  background: #ddd;
-  height: 100%;
+  background: #333;
 }
 
 img, svg {
@@ -21,32 +18,18 @@ img, svg {
 }
 
 .main {
-}
-
-.main__container {
-  max-width: 1140px;
-  margin: 0 auto;
+  margin: 90px 0;
+  background: #fff;
 }
 
 .content {
   position: relative;
-  background: #fff;
   color: #fff;
-  padding: 130px 15px 30px;
-  min-height: calc(100vh - 50px);
+  padding: 30px;
+  max-width: 960px;
+  margin: 0 auto;
 }
 
-#main {
-  margin-bottom: 100px;
-}
 
 @media (min-width: 768px) { }
-
-
-
-.main {
-}
-
-.side {
-}
 
