@@ -9,38 +9,11 @@
 <section id="content" role="main" class="content">
   <div class="content__container content__container--with-sidebar">
 
-    <aside class="side">
-      <nav class="region-nav">
-        <h3 class="region-nav__heading">Industry Information</h3>
-        {% include "partial/menu.twig" with {'items': about_menu.get_items, 'side': true} %}
-      <nav>
-    </aside>
-
     <article class="main post-type-{{post.post_type}}" id="post-{{post.ID}}">
       {{post.content}}
     </article>
 
   </div>
 </section>
-
-
-<!-- News Items -->
-<aside id="aside" class="aside">
-  <div class="aside__container">
-
-    <h2 class="section-heading">Latest News</h2>
-
-    <div class="news-releases-list latest-news">
-      {% for news in latest_news %} 
-      {% include 'partial/tease-news-release.twig' %}
-      {% endfor %}
-    </div>
-
-    <div class="listings-button">
-      <a class="listings-button" href="/news-releases/">See All News</a>
-    </div>
-
-  </div>
-</aside>
 
 {% endblock %}

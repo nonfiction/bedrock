@@ -1,5 +1,4 @@
 .navbar {
-  margin-top: 15px;
   position: fixed;
   z-index: 50;
   width: 100%;
@@ -25,7 +24,7 @@
 }
 .navbar__logo {
   height: 90px;
-  width: auto;
+  width: 90px;
 }
 
 .navbar__logo > a {
@@ -35,7 +34,7 @@
   justify-content: center;
 }
 
-.navbar__logo > a > .svg { height: 80%; }
+.navbar__logo > a > .svg {  }
 
 .navbar__logo--init { display: block; }
 .navbar__logo--scroll { display: none; }
