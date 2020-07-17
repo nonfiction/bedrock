@@ -1,12 +1,12 @@
 include .env 
 
-# Use PUBLIC_HOST if defined, otherwise set to APP_NAME + DEPLOY_HOST
-PUBLIC_HOST := $(if $(PUBLIC_HOST),$(PUBLIC_HOST),$(APP_NAME).$(DEPLOY_HOST))
+# Use PUBLIC_HOST if defined, otherwise set to APP_NAME + REMOTE_HOST
+PUBLIC_HOST := $(if $(PUBLIC_HOST),$(PUBLIC_HOST),$(APP_NAME).$(REMOTE_HOST))
 
-# docker-compose commands for development, production, and remote deployment
+# docker-compose commands for development, production, and remote production
 docker-compose := docker-compose
 docker-compose-prod := docker-compose -f docker-compose.yml -f docker-compose.production.yml
-docker-compose-remote := DOCKER_HOST=ssh://root@$(DEPLOY_HOST) APP_HOST=$(DEPLOY_HOST) docker-compose -f docker-compose.yml -f docker-compose.production.yml
+docker-compose-remote := DOCKER_HOST=ssh://root@$(REMOTE_HOST) APP_HOST=$(REMOTE_HOST) docker-compose -f docker-compose.yml -f docker-compose.production.yml
 
 # append bedrock's docker-compose file if available
 ifneq ("$(wildcard bedrock)","")
@@ -15,8 +15,8 @@ ifneq ("$(wildcard bedrock)","")
 endif
 
 all:
-	@echo "【 $(APP_NAME)@$(APP_HOST) --> $(DEPLOY_HOST) --> $(PUBLIC_HOST) 】"
-	@echo "   ‣ install ‣ upgrade ‣ deploy"
+	@echo "【 $(APP_NAME)@$(APP_HOST) --> $(REMOTE_HOST) --> $(PUBLIC_HOST) 】"
+	@echo "   ‣ install ‣ upgrade ‣ remote"
 	@echo "   ‣ build ‣ build! ‣ assets"
 	@echo "   ‣ up ‣ upp ‣ up!"
 	@echo "   ‣ down ‣ down!"
@@ -32,7 +32,7 @@ upp: assets build update-db ; $(docker-compose-prod) up --remove-orphans -d srv
 down:                       ; $(docker-compose) down --remove-orphans
 logs:                       ; $(docker-compose) logs -f
 
-deploy: ; $(docker-compose) run --rm env deploy_host
+remote: ; $(docker-compose) run --rm env remote_host
 dotenv: tmp-dir ; $(docker-compose) run --rm env dotenv
 
 up!: assets build! update-db! ; $(docker-compose-remote) up --remove-orphans -d srv
@@ -64,7 +64,7 @@ theme:   ; test $(add) && $(docker-compose) run --rm srv composer require --no-u
 package: ; test $(add) && $(docker-compose) run --rm dev npm install $(add) --save-dev
 
 tmp-dir:  ; @mkdir -p /tmp/$(APP_NAME)/uploads
-tmp-dir!: ; @ssh root@$(DEPLOY_HOST) mkdir -p /tmp/$(APP_NAME)/uploads
+tmp-dir!: ; @ssh root@$(REMOTE_HOST) mkdir -p /tmp/$(APP_NAME)/uploads
 
 db:         ; $(docker-compose) run --rm env create_db
 export-db:  ; $(docker-compose) run --rm -e UID=$(shell id -u) env export_db
@@ -72,7 +72,7 @@ import-db:  ; $(docker-compose) run --rm env import_db
 
 update-db:  ; $(docker-compose) run --rm wp core update-db
 update-db!: ; $(docker-compose-remote) run --rm wp core update-db
-public-db!: ; $(docker-compose-remote) run --rm wp search-replace --report-changed-only https://$(APP_NAME).$(DEPLOY_HOST) https://$(PUBLIC_HOST)
+public-db!: ; $(docker-compose-remote) run --rm wp search-replace --report-changed-only https://$(APP_NAME).$(REMOTE_HOST) https://$(PUBLIC_HOST)
 
 pull-db:
 	$(docker-compose) run --rm env pull_db
@@ -84,11 +84,11 @@ push-db:
 
 pull-files: tmp-dir tmp-dir! 
 	$(docker-compose-remote) run --rm env volume_to_host
-	$(docker-compose) run --rm env deploy_to_volume
+	$(docker-compose) run --rm env remote_to_volume
 	$(docker-compose-remote) run --rm env clean_host
 	
 push-files: tmp-dir tmp-dir!
-	$(docker-compose) run --rm env volume_to_deploy
+	$(docker-compose) run --rm env volume_to_remote
 	$(docker-compose-remote) run --rm env host_to_volume
 	$(docker-compose-remote) run --rm env clean_host
 
@@ -97,7 +97,7 @@ export-files: ; $(docker-compose) run --rm -e UID=$(shell id -u) env export_file
 
 shell:  ; $(docker-compose) exec srv bash
 shell!: ; $(docker-compose-remote) exec srv bash
-host!:  ; ssh root@$(DEPLOY_HOST)
+host!:  ; ssh root@$(REMOTE_HOST)
 
 push: push-files push-db
 pull: pull-files pull-db
@@ -127,8 +127,8 @@ pull-images:
 	docker image pull nonfiction/bedrock:srv
 
 pull-images!:
-	ssh root@$(DEPLOY_HOST) docker image pull nonfiction/bedrock:env
-	ssh root@$(DEPLOY_HOST) docker image pull nonfiction/bedrock:srv
+	ssh root@$(REMOTE_HOST) docker image pull nonfiction/bedrock:env
+	ssh root@$(REMOTE_HOST) docker image pull nonfiction/bedrock:srv
 
 .PHONY: bedrock
 bedrock:   ; cd bedrock && docker-compose build && docker-compose push

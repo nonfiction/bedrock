@@ -257,26 +257,26 @@ class MyThorCommand < Thor
       !ENV[key].to_s.empty?
     end
 
-    def env_DEPLOY_HOST
-      key = 'DEPLOY_HOST'
+    def env_REMOTE_HOST
+      key = 'REMOTE_HOST'
       if ENV[key].to_s.empty?
         ENV[key] = ENV['APP_HOST']
       end
       !ENV[key].to_s.empty?
     end
 
-    def env_DEPLOY_HOSTS
-      key = 'DEPLOY_HOSTS'
-      deploy_hosts = [ENV['DEPLOY_HOSTS']]
+    def env_REMOTE_HOSTS
+      key = 'REMOTE_HOSTS'
+      remote_hosts = [ENV['REMOTE_HOSTS']]
       if ENV[key].to_s.empty?
         msg ""
-        msg "Enter a DEPLOY_HOST (optional)"
+        msg "Enter a REMOTE_HOST (optional)"
         msg "Example: app1.example.com"
-        deploy_hosts << input(key).strip
+        remote_hosts << input(key).strip
       else
-        deploy_hosts << ENV[key].strip
+        remote_hosts << ENV[key].strip
       end
-      ENV[key] = deploy_hosts.compact.reject(&:empty?).uniq.join(',').to_s  
+      ENV[key] = remote_hosts.compact.reject(&:empty?).uniq.join(',').to_s  
       msg_env key
       !ENV[key].to_s.empty?
     end
@@ -351,7 +351,7 @@ class MyThorCommand < Thor
   desc "list", "List Commands"
   def list
     puts "dotenv"
-    puts "deploy_host"
+    puts "remote_host"
     puts "create_db"
     puts "export_db"
     puts "import_db"
@@ -361,8 +361,8 @@ class MyThorCommand < Thor
     puts "export_files"
     puts "volume_to_host"
     puts "host_to_volume"
-    puts "volume_to_deploy"
-    puts "deploy_to_volume"
+    puts "volume_to_remote"
+    puts "remote_to_volume"
     puts "clean_host"
   end
 
@@ -377,7 +377,7 @@ class MyThorCommand < Thor
 
     return unless env_APP_NAME
     return unless env_APP_HOST
-    return unless env_DEPLOY_HOSTS
+    return unless env_REMOTE_HOSTS
 
     env_APP_NAME_HOST
     env_DB_ADMIN_USER
@@ -416,9 +416,9 @@ class MyThorCommand < Thor
       APP_NAME=#{ENV['APP_NAME']}
       APP_HOST=#{ENV['APP_HOST']}
 
-      # Comma-separated remote docker hosts for deployment
-      DEPLOY_HOSTS=#{ENV['DEPLOY_HOSTS']}
-      DEPLOY_HOST=#{ENV['DEPLOY_HOSTS']}
+      # Comma-separated remote docker hosts
+      REMOTE_HOSTS=#{ENV['REMOTE_HOSTS']}
+      REMOTE_HOST=#{ENV['REMOTE_HOSTS']}
 
       # Publically accessible host name                                                                                                                                                             
       PUBLIC_HOST=
@@ -478,22 +478,22 @@ class MyThorCommand < Thor
   end
 
 
-  desc "deploy_host", "Choose deploy host"
-  def deploy_host
+  desc "remote_host", "Choose remote host"
+  def remote_host
     return unless env_APP_HOST
-    return unless env_DEPLOY_HOSTS
+    return unless env_REMOTE_HOSTS
 
-    deploy_hosts = ENV['DEPLOY_HOSTS'].split(',').uniq - ['']
+    remote_hosts = ENV['REMOTE_HOSTS'].split(',').uniq - ['']
     index = 0
-    index = choose("Choose deploy host:", deploy_hosts) if deploy_hosts.length > 1
+    index = choose("Choose remote host:", remote_hosts) if remote_hosts.length > 1
 
-    deploy_host = deploy_hosts[index]
-    ENV['DEPLOY_HOST'] = deploy_host.split('@').last
+    remote_host = remote_hosts[index]
+    ENV['REMOTE_HOST'] = remote_host.split('@').last
 
     if File.file? '.env'
       env = File.read('.env')
-      env.gsub!(/^DEPLOY_HOST=(.*)$/, "DEPLOY_HOST=#{ENV['DEPLOY_HOST']}")
-      msg "Updating .env with new DEPLOY_HOST: #{ENV['DEPLOY_HOST']}"
+      env.gsub!(/^REMOTE_HOST=(.*)$/, "REMOTE_HOST=#{ENV['REMOTE_HOST']}")
+      msg "Updating .env with new REMOTE_HOST: #{ENV['REMOTE_HOST']}"
       create_file '.env', env, :force => true
     end
   end
@@ -509,7 +509,7 @@ class MyThorCommand < Thor
     return unless env_DB_ADMIN_USER
     return unless env_APP_NAME
     return unless env_APP_HOST
-    return unless env_DEPLOY_HOSTS
+    return unless env_REMOTE_HOSTS
     return unless env_DB_USER
     return unless env_DB_PASSWORD
     env_APP_NAME_HOST
@@ -530,7 +530,7 @@ class MyThorCommand < Thor
     end
 
     # Array of database names (based on app_name + app_host/remote_host)
-    db_names = ([ENV['APP_HOST']] + ENV['DEPLOY_HOSTS'].split(',')).uniq.map do |each_host|
+    db_names = ([ENV['APP_HOST']] + ENV['REMOTE_HOSTS'].split(',')).uniq.map do |each_host|
       slug( ENV['APP_NAME'], each_host)
     end
 
@@ -556,7 +556,7 @@ class MyThorCommand < Thor
     say bold("EXPORT DB: data directory <== database")
     return unless env_APP_NAME
     return unless env_APP_HOST
-    return unless env_DEPLOY_HOST
+    return unless env_REMOTE_HOST
 
     db = slug( ENV['APP_NAME'], ENV['APP_HOST'] )
     db_file = "/srv/data/#{Time.now.utc.strftime("%Y%m%d-%H%M%S")}.sql"
@@ -571,7 +571,7 @@ class MyThorCommand < Thor
     say bold("IMPORT DB: data directory ==> database")
     return unless env_APP_NAME
     return unless env_APP_HOST
-    return unless env_DEPLOY_HOST
+    return unless env_REMOTE_HOST
 
     Dir.chdir('/srv/data')
     db_files = Dir.glob("*.sql")
@@ -592,28 +592,28 @@ class MyThorCommand < Thor
   end
 
 
-  desc "push_db", "Push the APP_HOST database to the DEPLOY_HOST database"
+  desc "push_db", "Push the APP_HOST database to the REMOTE_HOST database"
   def push_db
     return unless env_APP_NAME
     return unless env_APP_HOST
-    return unless env_DEPLOY_HOST
-    say bold("PUSH DB: #{ENV['APP_HOST']} ==> #{ENV['DEPLOY_HOST']}")
+    return unless env_REMOTE_HOST
+    say bold("PUSH DB: #{ENV['APP_HOST']} ==> #{ENV['REMOTE_HOST']}")
 
     source_db = slug( ENV['APP_NAME'], ENV['APP_HOST'] )
-    dest_db = slug( ENV['APP_NAME'], ENV['DEPLOY_HOST'] )
+    dest_db = slug( ENV['APP_NAME'], ENV['REMOTE_HOST'] )
 
     mysql_migrate(source_db, dest_db)
   end
 
 
-  desc "pull_db", "Pull the DEPLOY_HOST database to the APP_HOST database"
+  desc "pull_db", "Pull the REMOTE_HOST database to the APP_HOST database"
   def pull_db
     return unless env_APP_NAME
     return unless env_APP_HOST
-    return unless env_DEPLOY_HOST
-    say bold("PULL DB: #{ENV['APP_HOST']} <== #{ENV['DEPLOY_HOST']}")
+    return unless env_REMOTE_HOST
+    say bold("PULL DB: #{ENV['APP_HOST']} <== #{ENV['REMOTE_HOST']}")
 
-    source_db = slug( ENV['APP_NAME'], ENV['DEPLOY_HOST'] )
+    source_db = slug( ENV['APP_NAME'], ENV['REMOTE_HOST'] )
     dest_db = slug( ENV['APP_NAME'], ENV['APP_HOST'] )
 
     mysql_migrate(source_db, dest_db)
@@ -660,20 +660,20 @@ class MyThorCommand < Thor
     rsync "/host/", "/uploads/"
   end
 
-  desc "volume_to_deploy", "Copy from the volume to the remote tmp directory"
-  def volume_to_deploy
-    return unless env_DEPLOY_HOST
+  desc "volume_to_remote", "Copy from the volume to the remote directory"
+  def volume_to_remote
+    return unless env_REMOTE_HOST
     return unless env_APP_NAME
-    say bold("VOLUME TO DEPLOY: container volume ==> host directory")
-    rsync "/uploads/", "root@#{ENV['DEPLOY_HOST']}:/tmp/#{ENV['APP_NAME']}/uploads/"
+    say bold("VOLUME TO REMOTE: container volume ==> remote tmp directory")
+    rsync "/uploads/", "root@#{ENV['REMOTE_HOST']}:/tmp/#{ENV['APP_NAME']}/uploads/"
   end
 
-  desc "deploy_to_volume", "Copy from the remote tmp directory to the volume"
-  def deploy_to_volume
-    return unless env_DEPLOY_HOST
+  desc "remote_to_volume", "Copy from the remote tmp directory to the volume"
+  def remote_to_volume
+    return unless env_REMOTE_HOST
     return unless env_APP_NAME
-    say bold("DEPLOY TO VOLUME: container volume <== deploy host directory")
-    rsync "root@#{ENV['DEPLOY_HOST']}:/tmp/#{ENV['APP_NAME']}/uploads/", "/uploads/"
+    say bold("REMOTE TO VOLUME: container volume <== remote host directory")
+    rsync "root@#{ENV['REMOTE_HOST']}:/tmp/#{ENV['APP_NAME']}/uploads/", "/uploads/"
   end
 
   desc "clean_host", "Free disk space on the host tmp directory"

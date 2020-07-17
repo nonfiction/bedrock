@@ -47,13 +47,13 @@ make logs
 make down
 ```
 
-#### Choose deploy host
+#### Choose remote host
 
 ```
-make deploy
+make remote
 ```
 
-#### Deploy to production
+#### Deploy to remote production
 
 ```
 make up!
