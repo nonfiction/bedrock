@@ -106,7 +106,7 @@ export: export-files export-db
 
 clean: ; rm -rf data/* && touch data/.gitkeep
 
-restore:   ; $(docker-compose) run --rm env restore
+restore: ; $(docker-compose) run --rm -e UID=$(shell id -u) env restore
 
 install: .env assets rebuild
 	$(docker-compose) run --rm wp core install \

@@ -114,7 +114,7 @@ class MyThorCommand < Thor
 
     def cli(command, echo = true)
       if echo
-        say "#{set_color(' > ', :black, :on_yellow, :bold)} #{set_color(command, :yellow)}"
+        say "#{set_color(' > ', :black, :on_magenta, :bold)} #{set_color(command, :magenta)}"
       end
 
       out, err, stat = Open3.capture3(command)
@@ -727,9 +727,15 @@ class MyThorCommand < Thor
     cli( 'curl -L https://github.com/nonfiction/bedrock/archive/master.zip > /tmp/bedrock-master.zip' )
     cli( 'cd /tmp && unzip -o -q /tmp/bedrock-master.zip', true )
     
+    chown_these = []
     indexes.each do |index| 
-      cli( "cp -rf /tmp/bedrock-master/#{files[index]} /srv/#{files[index]}" )
+      src = "/tmp/bedrock-master/#{files[index]}"
+      dest = "/srv/#{files[index]}"
+      cli( "rm -rf #{dest} && cp -rf #{src} #{dest}" )
+      chown_these << dest
     end
+
+    chown "#{chown_these.join(' ')}"
 
   end
 
