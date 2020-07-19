@@ -25,6 +25,9 @@ services:
         source: ./bedrock/srv/web/wp-config.php
         target: /srv/web/wp-config.php
       - type: bind
+        source: ./bedrock/srv/web/app/mu-plugins/site.php
+        target: /srv/web/app/mu-plugins/site.php
+      - type: bind
         source: ./bedrock/srv/web/app/mu-plugins/bedrock-autoloader.php
         target: /srv/web/app/mu-plugins/bedrock-autoloader.php
       - type: bind

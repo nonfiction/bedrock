@@ -9,6 +9,7 @@
  */
 
 use Roots\WPConfig\Config;
+use function Env\env;
 
 // Directory containing all of the site's files
 $root_dir = dirname(__DIR__);
@@ -16,11 +17,9 @@ $root_dir = dirname(__DIR__);
 // Document Root
 $webroot_dir = $root_dir . '/web';
 
-// Expose global env() function from oscarotero/env
-Env::init();
 
 // Use Dotenv to set required environment variables and load .env file in root
-$dotenv = Dotenv\Dotenv::create($root_dir);
+$dotenv = Dotenv\Dotenv::createImmutable($root_dir);
 if (file_exists($root_dir . '/.env')) {
   $dotenv->load();
   $dotenv->required(['APP_NAME', 'APP_HOST']);
@@ -30,7 +29,7 @@ if (file_exists($root_dir . '/.env')) {
 }
 
 // Salts are generated in a separate .env file
-$dotenv_salts = Dotenv\Dotenv::create($root_dir, 'salts.env');
+$dotenv_salts = Dotenv\Dotenv::createImmutable($root_dir, 'salts.env');
 if (file_exists($root_dir . '/salts.env')) {
   $dotenv_salts->load();
 }
@@ -111,14 +110,20 @@ if (env('S3_UPLOADS_SPACE')) {
 }
 
 // Authentication Unique Keys and Salts
-Config::define('AUTH_KEY', env('AUTH_KEY'));
-Config::define('SECURE_AUTH_KEY', env('SECURE_AUTH_KEY'));
-Config::define('LOGGED_IN_KEY', env('LOGGED_IN_KEY'));
-Config::define('NONCE_KEY', env('NONCE_KEY'));
-Config::define('AUTH_SALT', env('AUTH_SALT'));
-Config::define('SECURE_AUTH_SALT', env('SECURE_AUTH_SALT'));
-Config::define('LOGGED_IN_SALT', env('LOGGED_IN_SALT'));
-Config::define('NONCE_SALT', env('NONCE_SALT'));
+foreach([ 
+  'AUTH_KEY', 'SECURE_AUTH_KEY', 'LOGGED_IN_KEY', 'NONCE_KEY', 
+  'AUTH_SALT', 'SECURE_AUTH_SALT', 'LOGGED_IN_SALT', 'NONCE_SALT', 
+] as $key) {
+  
+  // If a key defined in the env, use that value
+  if ( env($key) ) {
+    Config::define( $key, env($key) );
+
+  // Otherwise, generate a value
+  } else {
+    Config::define( $key, hash('sha256', $key . env('APP_NAME') . env('APP_HOST') . env('DB_PASSWORD') ) );
+  }
+}
 
 // Custom Settings
 Config::define('AUTOMATIC_UPDATER_DISABLED', true);

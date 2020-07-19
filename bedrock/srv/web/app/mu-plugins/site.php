@@ -6,4 +6,6 @@ Author: nonfiction studios
 Version: 1.0
 */
 
-include_once __DIR__ . '/../site/site.php';
+if ( file_exists( __DIR__ . '/../site/site.php' ) ) {
+  include_once __DIR__ . '/../site/site.php';
+}
