@@ -98,6 +98,13 @@ COPY ./config /srv/config
 # Symlink the apache vhost to where it will be found
 RUN ln -sf /srv/config/vhost.conf /etc/apache2/sites-available/000-default.conf
 
+# Persist uploads in this volume
+VOLUME /srv/web/app/uploads
+
+# Give Apache permissions for /app dir
+RUN chown -R www-data:www-data /srv/web/app
+
+# This script starts Apache Server
 COPY ./run.sh /bin/run
 RUN chmod +x /bin/run
 CMD ["/bin/run"]
