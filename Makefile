@@ -106,6 +106,8 @@ export: export-files export-db
 
 clean: ; rm -rf data/* && touch data/.gitkeep
 
+restore:   ; $(docker-compose) run --rm env restore
+
 install: .env assets rebuild
 	$(docker-compose) run --rm wp core install \
 		--url=https://$(APP_NAME).$(APP_HOST) \

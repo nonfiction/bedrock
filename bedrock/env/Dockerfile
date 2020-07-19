@@ -6,6 +6,7 @@ RUN set -ex; \
   apt-get install -y --no-install-recommends \
     less \
     curl \
+    unzip \
     rsync \
     openssh-client \
     ca-certificates \

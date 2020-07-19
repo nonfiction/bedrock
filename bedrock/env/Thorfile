@@ -81,6 +81,25 @@ class MyThorCommand < Thor
       return chosen_index.to_i - 1
     end
 
+    def choose_multiple(prompt = "", choices = [])
+      env_APP_NAME
+      args = [
+        "--clear",
+        "--output-fd 1",
+        "--separate-output",
+        "--title \"#{ENV['APP_NAME']}\"",
+        "--checklist \"#{prompt}\"",
+        '15 50 12'
+      ]
+      opts = choices.map.with_index do |choice, index|
+        "#{index + 1} \"#{choice}\" off"
+      end
+      chosen_indexes = cli("dialog #{args.join(' ')} #{opts.join(' ')}", false)
+      return chosen_indexes.split("\n").map do |index| 
+        index.to_i - 1
+      end
+    end
+
     def default_package_name
       'bedrock'
     end
@@ -683,6 +702,37 @@ class MyThorCommand < Thor
     say( "#{set_color(' > ', :black, :on_magenta, :bold)} #{set_color(command, :magenta)}" )
     return cli( command, false )
   end
+
+
+  desc "restore", "Restore original files"
+  def restore
+
+    files = [
+      'Makefile',
+      'Dockerfile',
+      'docker-compose.override.yml',
+      'docker-compose.production.yml',
+      'docker-compose.yml',
+      '.dockerignore',
+      '.gitignore',
+      'example.env',
+      'site/webpack.config.js',
+      'site/site.php',
+      'bedrock',
+    ]
+
+    indexes = choose_multiple("Choose files to restore:", files)
+    return if indexes.length < 1
+
+    cli( 'curl -L https://github.com/nonfiction/bedrock/archive/master.zip > /tmp/bedrock-master.zip' )
+    cli( 'cd /tmp && unzip -o -q /tmp/bedrock-master.zip', true )
+    
+    indexes.each do |index| 
+      cli( "cp -rf /tmp/bedrock-master/#{files[index]} /srv/#{files[index]}" )
+    end
+
+  end
+
 
 end
 MyThorCommand.start
