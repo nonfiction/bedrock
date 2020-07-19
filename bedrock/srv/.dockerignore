@@ -6,6 +6,7 @@ web/app/*
 !web/app/plugins/.gitkeep
 !web/app/mu-plugins/bedrock-autoloader.php
 !web/app/mu-plugins/register-theme-directory.php
+!web/app/mu-plugins/site.php
 
 # WordPress
 web/wp
