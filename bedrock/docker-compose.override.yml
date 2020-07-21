@@ -1,6 +1,6 @@
 version: "3.7"
-
 services:
+
   srv:
     volumes:
       - type: bind
@@ -33,6 +33,15 @@ services:
       - type: bind
         source: ./bedrock/srv/web/app/mu-plugins/register-theme-directory.php
         target: /srv/web/app/mu-plugins/register-theme-directory.php
+
+  dev:
+    volumes:
+      - type: bind
+        source: ./bedrock/dev/web/app/site/src/webpack
+        target: /srv/web/app/site/src/webpack
+      - type: bind
+        source: ./bedrock/dev/web/app/site/webpack.config.js
+        target: /srv/web/app/site/webpack.config.js
 
   env:
     volumes:

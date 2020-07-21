@@ -1,7 +1,5 @@
 FROM node:latest
 
-WORKDIR /srv/
-
 RUN set -ex; \
   npm install -g \
     webpack \
@@ -12,5 +10,10 @@ RUN set -ex; \
   ;
 
 EXPOSE 80
+
+WORKDIR /srv/web/app/site
+
+COPY ./web/app/site/src/webpack /srv/web/app/site/src/webpack
+COPY ./web/app/site/webpack.config.js /srv/web/app/site/webpack.config.js
 
 CMD ["webpack"]

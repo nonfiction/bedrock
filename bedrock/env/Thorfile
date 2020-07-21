@@ -715,8 +715,10 @@ class MyThorCommand < Thor
       'docker-compose.yml',
       '.dockerignore',
       '.gitignore',
+      'README.md',
       'example.env',
-      'site/webpack.config.js',
+      'site/tweaks',
+      'site/classes',
       'site/site.php',
       'bedrock',
     ]
@@ -729,10 +731,21 @@ class MyThorCommand < Thor
     
     chown_these = []
     indexes.each do |index| 
-      src = "/tmp/bedrock-master/#{files[index]}"
-      dest = "/srv/#{files[index]}"
-      cli( "rm -rf #{dest} && cp -rf #{src} #{dest}" )
-      chown_these << dest
+
+      official = "/tmp/bedrock-master/#{files[index]}"
+      working = "/srv/#{files[index]}"
+      scratch = "/srv/scratch/#{files[index]}"
+
+      # Ensure scratch directory exists and remove existing file if exists
+      cli( "mkdir -p /srv/scratch && rm -rf #{scratch}", false )
+
+      # Move the working file to the scratch directory
+      cli( "mv -f #{working} #{scratch}" )
+
+      # Copy the official file to the working destination
+      cli( "cp -rf #{official} #{working}" )
+
+      chown_these << working
     end
 
     chown "#{chown_these.join(' ')}"
