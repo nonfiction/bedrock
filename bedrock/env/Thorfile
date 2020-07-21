@@ -740,7 +740,7 @@ class MyThorCommand < Thor
       scratch = "/srv/scratch/#{files[index]}"
 
       # Ensure scratch directory exists and remove existing file if exists
-      cli( "mkdir -p /srv/scratch && rm -rf #{scratch}", false )
+      cli( "mkdir -p /srv/scratch/site && rm -rf #{scratch}", false )
 
       # Move the working file to the scratch directory
       cli( "mv -f #{working} #{scratch}" )
