@@ -37,11 +37,8 @@ services:
   dev:
     volumes:
       - type: bind
-        source: ./bedrock/dev/web/app/site/src/webpack
-        target: /srv/web/app/site/src/webpack
-      - type: bind
-        source: ./bedrock/dev/web/app/site/webpack.config.js
-        target: /srv/web/app/site/webpack.config.js
+        source: ./bedrock/dev/dev
+        target: /srv/dev
 
   env:
     volumes:

@@ -720,6 +720,9 @@ class MyThorCommand < Thor
       'site/tweaks',
       'site/classes',
       'site/site.php',
+      'site/webpack.config.js',
+      'site/package.json',
+      'site/composer.json',
       'bedrock',
     ]
 

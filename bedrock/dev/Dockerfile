@@ -11,9 +11,8 @@ RUN set -ex; \
 
 EXPOSE 80
 
-WORKDIR /srv/web/app/site
+COPY ./dev /srv/dev
 
-COPY ./web/app/site/src/webpack /srv/web/app/site/src/webpack
-COPY ./web/app/site/webpack.config.js /srv/web/app/site/webpack.config.js
+WORKDIR /srv/web/app/site/
 
 CMD ["webpack"]
