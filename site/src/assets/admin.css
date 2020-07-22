@@ -1,36 +1,3 @@
 /* This is contains styles for admin pages */
 @import "css/base.css"; 
-
-/* Replace WP icon when editing full screen */
-@media (min-width: 782px) {
-  .edit-post-fullscreen-mode-close.has-icon,
-  .edit-post-fullscreen-mode-close.has-icon:hover {
-    background: #000 url(../../src/logo.jpg) no-repeat !important;
-    background-size: contain !important;
-    transition: filter 0.3s ease;
-  }
-  .edit-post-fullscreen-mode-close.has-icon:hover {
-    filter: grayscale(100%);
-  }
-  .edit-post-fullscreen-mode-close.has-icon svg { 
-    display: none; 
-  }
-}
-
-/* Clean up Torro Forms */
-.welcome-to-torro { display: none; }
-
-/* Clean up Members Admin */
-a[href="admin.php?page=members-settings&view=add-ons"],
-a[href="admin.php?page=members-payments"],
-a[href="admin.php?page=members-about"] {
-  display: none !important;
-}
-
-/* Clean up Imsanity */
-#ewwwio-promo { display: none !important; }
-
-/* Clean up wpcrontrol */
-a[href="tools.php?page=crontrol_admin_manage_page&action=new-php-cron"] {
-  display: none !important;
-}
+@import "../tweaks/admin-tweaks.css"; 
