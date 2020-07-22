@@ -717,8 +717,8 @@ class MyThorCommand < Thor
       '.gitignore',
       'README.md',
       'example.env',
-      'site/tweaks',
-      'site/classes',
+      'site/src/tweaks',
+      'site/src/classes',
       'site/site.php',
       'site/webpack.config.js',
       'site/package.json',
@@ -740,7 +740,7 @@ class MyThorCommand < Thor
       scratch = "/srv/scratch/#{files[index]}"
 
       # Ensure scratch directory exists and remove existing file if exists
-      cli( "mkdir -p /srv/scratch/site && rm -rf #{scratch}", false )
+      cli( "mkdir -p /srv/scratch/site/src && rm -rf #{scratch}", false )
 
       # Move the working file to the scratch directory
       cli( "mv -f #{working} #{scratch}" )
