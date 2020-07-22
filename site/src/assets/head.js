@@ -1,5 +1,5 @@
 // This is contains JavaScript for the theme that loads in the <head>
-// console.log("Loaded head.js");
+import './style.css';
 
 import '@iconfu/svg-inject';
 

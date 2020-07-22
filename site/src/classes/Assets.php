@@ -9,7 +9,8 @@ class Assets {
   public function __construct( $manifest_path ) {
     $this->load( $manifest_path );
     $this->do_admin();
-    $this->do_theme();
+    $this->do_head();
+    $this->do_body();
     $this->do_blocks();
     $this->do_blocktypes();
     // $this->dequeue_wp_block_css();
@@ -21,9 +22,11 @@ class Assets {
 
     $manifest = json_decode( file_get_contents( $manifest_path ) );
 
+    $this->src['nf-head-css']       = $manifest->head->css       ?? null;
     $this->src['nf-head-js']        = $manifest->head->js        ?? null;
-    $this->src['nf-theme-css']      = $manifest->theme->css      ?? null;
-    $this->src['nf-theme-js']       = $manifest->theme->js       ?? null;
+
+    $this->src['nf-body-css']       = $manifest->body->css       ?? null;
+    $this->src['nf-body-js']        = $manifest->body->js        ?? null;
 
     $this->src['nf-admin-css']      = $manifest->admin->css      ?? null;
     $this->src['nf-admin-js']       = $manifest->admin->js       ?? null;
@@ -37,13 +40,22 @@ class Assets {
   }
 
 
-  // Theme styles and scripts
-  private function do_theme() {
+  // <head> styles and scripts
+  private function do_head() {
     add_action('wp_enqueue_scripts', function() {
 
+      $this->enqueue([ 'handle' => 'nf-head-css' ]);
       $this->enqueue([ 'handle' => 'nf-head-js' ]);
-      $this->enqueue([ 'handle' => 'nf-theme-css' ]);
-      $this->enqueue([ 'handle' => 'nf-theme-js', 'in_footer' => true ]);
+
+    },100);
+  }
+
+  // <body> styles and scripts
+  private function do_body() {
+    add_action('wp_enqueue_scripts', function() {
+
+      $this->enqueue([ 'handle' => 'nf-body-css' ]);
+      $this->enqueue([ 'handle' => 'nf-body-js', 'in_footer' => true ]);
 
     },100);
   }
@@ -65,7 +77,7 @@ class Assets {
   }
 
 
-  // Blocks styles and scripts (both theme and admin)
+  // Blocks styles and scripts (both front-end and admin)
   private function do_blocks() {
     add_action('enqueue_block_assets', function() {
 

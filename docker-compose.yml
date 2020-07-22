@@ -41,7 +41,7 @@ services:
         target: /srv/web/app/site
       - type: volume
         source: node_modules
-        target: /srv/web/app/site/node_modules
+        target: /srv/node_modules
     expose:
       - 443
 

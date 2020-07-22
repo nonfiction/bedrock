@@ -9,7 +9,7 @@ RUN set -ex; \
     stylelint \
   ;
 
-EXPOSE 80
+ENV NODE_PATH=/srv/node_modules
 
 COPY ./dev /srv/dev
 

@@ -1,5 +1,4 @@
 // This is contains JavaScript for the theme that loads before the </body>
-import './theme.css';
 
 // Create new HTML element from string
 const el = ( domstring ) => {
