@@ -732,7 +732,7 @@ class MyThorCommand < Thor
     cli( 'curl -L https://github.com/nonfiction/bedrock/archive/master.zip > /tmp/bedrock-master.zip' )
     cli( 'cd /tmp && unzip -o -q /tmp/bedrock-master.zip', true )
     
-    chown_these = []
+    chown_these = ['/srv/scratch']
     indexes.each do |index| 
 
       official = "/tmp/bedrock-master/#{files[index]}"
