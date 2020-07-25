@@ -108,7 +108,7 @@ clean: ; rm -rf data/* && touch data/.gitkeep
 
 restore: ; $(docker-compose) run --rm -e UID=$(shell id -u) env restore
 
-install: .env assets rebuild
+install: .env tmp-dir assets rebuild
 	$(docker-compose) run --rm wp core install \
 		--url=https://$(APP_NAME).$(APP_HOST) \
 		--title=$(APP_NAME) \

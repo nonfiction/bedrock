@@ -408,24 +408,23 @@ class MyThorCommand < Thor
       env_S3_UPLOADS_SECRET 
     end	
 
-    # Update name in package.json
-    ['site/package.json', 'site/package-lock.json'].each do |filename|
-      if File.file? filename
-        text = File.read(filename).gsub(/#{default_package_name}/, ENV['APP_NAME'])
-        msg "Writing #{filename} with new name: #{ENV['APP_NAME']}"
-        create_file filename, text, :force => true
-      end
-    end
-
-    # Update name in docker-compose.yml
-    ['docker-compose.yml'].each do |filename|
-      if File.file? filename
-        text = File.read(filename).gsub(/#{default_package_name}:latest/, "#{ENV['APP_NAME']}:latest")
-        msg "Writing #{filename} with new name: #{ENV['APP_NAME']}:latest"
-        create_file filename, text, :force => true
-      end
-    end
-    return
+    # # Update name in package.json
+    # ['site/package.json', 'site/package-lock.json'].each do |filename|
+    #   if File.file? filename
+    #     text = File.read(filename).gsub(/#{default_package_name}/, ENV['APP_NAME'])
+    #     msg "Writing #{filename} with new name: #{ENV['APP_NAME']}"
+    #     create_file filename, text, :force => true
+    #   end
+    # end
+    #
+    # # Update name in docker-compose.yml
+    # ['docker-compose.yml'].each do |filename|
+    #   if File.file? filename
+    #     text = File.read(filename).gsub(/#{default_package_name}:latest/, "#{ENV['APP_NAME']}:latest")
+    #     msg "Writing #{filename} with new name: #{ENV['APP_NAME']}:latest"
+    #     create_file filename, text, :force => true
+    #   end
+    # end
 
     # Build .env configuration
     dotenv = <<~DOTENV.strip
