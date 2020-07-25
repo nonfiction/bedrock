@@ -137,3 +137,5 @@ bedrock:   ; cd bedrock && docker-compose build && docker-compose push
 env-shell: ; $(docker-compose) run --rm --entrypoint /bin/bash env
 dev-shell: ; $(docker-compose-prod) run --rm --entrypoint /bin/bash dev
 srv-shell: ; $(docker-compose-prod) run --rm --entrypoint /bin/bash srv
+
+test: ; $(docker-compose) run --rm env test && ./cmd.sh

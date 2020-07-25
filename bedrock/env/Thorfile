@@ -390,9 +390,9 @@ class MyThorCommand < Thor
   def dotenv
     say bold(".env GENERATOR")
 
-    # return unless env_DB_HOST
-    # return unless env_DB_ROOT_USER
-    # return unless env_DB_ROOT_PASSWORD
+    return unless env_DB_HOST
+    return unless env_DB_ROOT_USER
+    return unless env_DB_ROOT_PASSWORD
 
     return unless env_APP_NAME
     return unless env_APP_HOST
@@ -755,6 +755,22 @@ class MyThorCommand < Thor
 
   end
 
+  desc "test", "test"
+  def test
+    
+    cmd = <<~CMD.strip
+      #!/bin/bash
+      date
+      ls -lah
+      rm -f ./cmd.sh
+    CMD
+
+    # Write cmd.sh file
+    msg "Writing cmd.sh to disk"
+    create_file "cmd.sh", cmd, :force => true
+    cli( "chmod +x /srv/cmd.sh" )
+    
+  end
 
 end
 MyThorCommand.start
