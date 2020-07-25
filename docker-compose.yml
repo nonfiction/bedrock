@@ -33,7 +33,6 @@ services:
   # Webpack Dev Server
   dev:
     image: nonfiction/bedrock:dev
-    working_dir: /srv/web/app/site
     command: webpack-dev-server --hide-modules --hot
     volumes:
       - type: bind

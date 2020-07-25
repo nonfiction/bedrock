@@ -48,7 +48,7 @@ logs!:                        ; $(docker-compose-remote) logs -f
 
 assets:
 	$(docker-compose-prod) run --rm dev npx ncu -u
-	$(docker-compose-prod) run --rm dev npm update --save-dev --prefix /srv/node_modules
+	$(docker-compose-prod) run --rm dev npm update --save-dev
 	$(docker-compose-prod) run --rm dev webpack --progress
 
 build: tmp-dir     ; $(docker-compose) build srv
@@ -61,7 +61,7 @@ upgrade: .env assets rebuild update-db
 # make plugin/theme/package add=name_of_package
 plugin:  ; test $(add) && $(docker-compose) run --rm srv composer require --no-update wpackagist-plugin/$(add)
 theme:   ; test $(add) && $(docker-compose) run --rm srv composer require --no-update wpackagist-theme/$(add)
-package: ; test $(add) && $(docker-compose) run --rm dev npm install $(add) --save-dev --prefix /srv/node_modules
+package: ; test $(add) && $(docker-compose) run --rm dev npm install $(add) --save-dev --prefix
 
 tmp-dir:  ; @mkdir -p /tmp/$(APP_NAME)/uploads
 tmp-dir!: ; @ssh root@$(REMOTE_HOST) mkdir -p /tmp/$(APP_NAME)/uploads

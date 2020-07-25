@@ -576,11 +576,14 @@ class MyThorCommand < Thor
     return unless env_APP_HOST
     return unless env_REMOTE_HOST
 
+    data_dir = '/srv/data'
+    cli( "mkdir -p #{data_dir}", false )
+
     db = slug( ENV['APP_NAME'], ENV['APP_HOST'] )
-    db_file = "/srv/data/#{Time.now.utc.strftime("%Y%m%d-%H%M%S")}.sql"
+    db_file = "#{data_dir}/#{Time.now.utc.strftime("%Y%m%d-%H%M%S")}.sql"
 
     mysql_migrate( db, db_file )
-    chown db_file
+    chown data_dir
   end
 
   
@@ -661,8 +664,13 @@ class MyThorCommand < Thor
   desc "export_files", "Export from the APP_HOST volume to the data directory"
   def export_files
     say bold("EXPORT FILES: data directory <== container volume")
-    data_dir = "/srv/data/#{Time.now.utc.strftime("%Y%m%d-%H%M%S")}/"
-    rsync "/uploads/", data_dir
+
+    data_dir = '/srv/data'
+    cli( "mkdir -p #{data_dir}", false )
+
+    uploads = "#{data_dir}/#{Time.now.utc.strftime("%Y%m%d-%H%M%S")}/"
+    rsync "/uploads/", uploads
+
     chown data_dir
   end
 
