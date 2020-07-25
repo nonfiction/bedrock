@@ -492,7 +492,7 @@ class MyThorCommand < Thor
     create_file ".env", dotenv, :force => true
 
     # Run db task
-    db_create
+    create_db
   end
 
 
