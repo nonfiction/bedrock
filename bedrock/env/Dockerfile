@@ -22,7 +22,7 @@ RUN chmod +x /bin/tasks
 
 WORKDIR /srv/
 
-RUN touch /.env
+RUN touch /srv/.env
 
 ENTRYPOINT ["tasks"]
 
