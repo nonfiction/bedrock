@@ -5,8 +5,8 @@ PUBLIC_HOST := $(if $(PUBLIC_HOST),$(PUBLIC_HOST),$(APP_NAME).$(REMOTE_HOST))
 
 # docker-compose commands for development, production, and remote production
 docker-compose := docker-compose
-docker-compose-prod := docker-compose -f docker-compose.yml -f docker-compose.production.yml
-docker-compose-remote := DOCKER_HOST=ssh://root@$(REMOTE_HOST) APP_HOST=$(REMOTE_HOST) docker-compose -f docker-compose.yml -f docker-compose.production.yml
+docker-compose-prod := PUBLIC_HOST=$(PUBLIC_HOST) docker-compose -f docker-compose.yml -f docker-compose.production.yml
+docker-compose-remote := DOCKER_HOST=ssh://root@$(REMOTE_HOST) APP_HOST=$(REMOTE_HOST) PUBLIC_HOST=$(PUBLIC_HOST) docker-compose -f docker-compose.yml -f docker-compose.production.yml
 
 # append bedrock's docker-compose file if available
 ifneq ("$(wildcard bedrock)","")
