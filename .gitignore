@@ -4,8 +4,7 @@
 # Webpack
 site/dist/*
 !site/dist/.gitkeep
-site/node_modules
-site/package-lock.json
+node_modules
 
 # Imports/Exports
 data/*
