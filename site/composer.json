@@ -13,12 +13,16 @@
     }
   },
   "require": {
-    "wpackagist-plugin/imsanity": "^2.6",
+    "humanmade/s3-uploads": "^2.2",
     "wpackagist-plugin/debug-bar": "^1.0",
     "wpackagist-plugin/disable-comments": "^1.10",
+    "wpackagist-plugin/imsanity": "^2.6",
+    "wpackagist-plugin/members": "^3.0",
     "wpackagist-plugin/query-monitor": "^3.5",
+    "wpackagist-plugin/safe-redirect-manager": "^1.9",
+    "wpackagist-plugin/stream": "^3.5",
     "wpackagist-plugin/torro-forms": "^1.0",
     "wpackagist-plugin/user-switching": "^1.5",
-    "wpackagist-plugin/members": "^3.0"
+    "wpackagist-plugin/wp-crontrol": "^1.8"
   }
 }
