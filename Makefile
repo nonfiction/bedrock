@@ -115,7 +115,7 @@ install: .env tmp-dir assets rebuild
 		--admin_email=web@nonfiction.ca \
 		--admin_user=nf-$(APP_NAME) \
 		--admin_password=$(DB_PASSWORD)
-	$(docker-compose) run --rm wp plugin activate --all
+	$(docker-compose) run --rm wp plugin activate intervention cmb2
 	$(docker-compose) run --rm wp theme activate src
 	$(docker-compose) run --rm wp rewrite structure /%postname%/
 	@echo 
