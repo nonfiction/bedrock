@@ -70,15 +70,17 @@ const config = {
           // 1. Convert future CSS to current CSS
           {
             loader: 'postcss-loader',
-            options: {
-              ident: 'postcss',
-              plugins: (loader) => [
-                require('postcss-import')({ root: loader.resourcePath }),
-                require('postcss-preset-env')({ stage: 2, features: { 'nesting-rules': true } }),
-                require('postcss-pxtorem')({ propList: ['*'] }),
-              ],
+            options: { 
+              postcssOptions: {
+                plugins: (loader) => [
+                  require('postcss-import')({ root: loader.resourcePath }),
+                  require('postcss-preset-env')({ stage: 2, features: { 'nesting-rules': true } }),
+                  require('postcss-pxtorem')({ propList: ['*'] }),
+                ],
+              }
             }
-          }
+          },
+
 
         ],
       },
