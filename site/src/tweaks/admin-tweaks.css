@@ -29,7 +29,8 @@
 /* -------------------------------------------------------- */
 a[href="admin.php?page=members-settings&view=add-ons"],
 a[href="admin.php?page=members-payments"],
-a[href="admin.php?page=members-about"] {
+a[href="admin.php?page=members-about"],
+#wpbody .members-review-notice {
   display: none !important;
 }
 
