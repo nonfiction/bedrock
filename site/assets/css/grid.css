@@ -1,0 +1,30 @@
+#site {
+  background: pink;
+    display: grid;
+    grid-template:
+        "header         header          header"
+        "left-sidebar   main-content    right-sidebar"
+        "footer         footer          footer"
+        / 1fr           6fr             1fr
+    ;
+}
+
+#header {
+  grid-area: header;
+}
+
+#left-sidebar {
+  grid-area: left-sidebar;
+}
+
+#main-content {
+  grid-area: main-content;
+}
+
+#right-siderbar {
+  grid-area: right-sidebar;
+}
+
+#footer {
+  grid-area: footer;
+}

@@ -1,0 +1,43 @@
+.footer {
+  background: #003b7f;
+  padding: 25px 0;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+
+.footer__container {
+  position: relative;
+  height: 100%;
+  max-width: 1140px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: stretch;
+}
+
+@media (min-width: 992px) {
+  .footer__container {
+    flex-direction: row;
+  }
+}
+
+.footer__copyright,
+.footer__utility ul.menu li a,
+.footer__privacy ul.menu li a {
+  font-size: 16px;
+  color: #fff;
+  font-weight: 400;
+  text-align: center;
+}
+
+.footer__copyright {
+  margin: 15px 0;
+}
+
+@media (min-width: 992px) {
+  .footer__copyright {
+    margin: 0;
+  }
+}

@@ -19,11 +19,11 @@ const config = {
 
   // Which files to start looking at
   entry: {
-    head:       `${src}/head.js`,
-    body:       `${src}/body.js`,
-    blocks:     `${src}/blocks.js`,
-    blocktypes: `${src}/blocktypes.js`,
-    admin:      `${src}/admin.js`,
+    head:   `${src}/head.js`,
+    body:   `${src}/body.js`,
+    blocks: `${src}/blocks.js`,
+    editor: `${src}/editor.js`,
+    admin:  `${src}/admin.js`,
   },
 
   // Where to save build files to disk
@@ -140,6 +140,7 @@ const config = {
     // Wordpress can use this json file to know which assets to enqueue
     new (require('assets-webpack-plugin'))({
       path: `${path}`,
+      includeAllFileTypes: false,
       filename: DEV ? `manifest-dev.json` : `manifest.json`,
     }),
 
@@ -150,6 +151,7 @@ const config = {
       }),
 
   ].filter(Boolean),
+
 }
 
 module.exports = config;
