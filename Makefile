@@ -116,7 +116,7 @@ install: .env tmp-dir assets rebuild
 		--admin_user=nf-$(APP_NAME) \
 		--admin_password=$(DB_PASSWORD)
 	$(docker-compose) run --rm wp plugin activate intervention cmb2
-	$(docker-compose) run --rm wp theme activate src
+	$(docker-compose) run --rm wp theme activate theme
 	$(docker-compose) run --rm wp rewrite structure /%postname%/
 	@echo 
 	@echo URL: https://$(APP_NAME).$(APP_HOST)/wp/wp-login.php
