@@ -1,27 +1,32 @@
 // This is contains JavaScript for blocktypes (editor)
 // WP hook: enqueue_block_editor_assets
 
-// Initialize nf.blockTypes object
+const { registerBlockType } = wp.blocks;
+
+// Initialize nf object
 global.nf = global.nf || {};
-nf.blockTypes = nf.blockTypes || {};
 
-// Method to add new blocktypes
-nf.registerBlockType = function(name, blockType){
-  nf.blockTypes[name] = blockType;
-}
+// Method to register new blocktypes with json and name in args
+nf.registerBlockType = function( json = {}, override = {} ) {
 
-// Method to load a stored blocktype
-nf.loadBlockType = function(name){
-  if ( nf.blockTypes.hasOwnProperty(name) ) {
-    let blockType = nf.blockTypes[name];
-    wp.blocks.registerBlockType(name, blockType);
+  let args = { ...json, ...override };
+  let name = args.name || false; 
+
+  let icon = args.icon || "";
+  args.icon = icon.replace('dashicons-', '');
+
+  if ( name ) {
+    registerBlockType( name, args );
   }
+
 }
 
-// Import all ./site/src/blocks/*/index.js files
+// Import block-related index.js files
+// ./site/blocks/*/index.js
+// ./site/posts/*/blocks/*/index.js
 function importAll (r) { r.keys().forEach(r) }
-importAll(require.context('/srv/web/app/site/src/blocks', true, /\/index\.js$/));
+importAll(require.context('/srv/web/app/site/blocks', true, /^\.\/[\w\-]+\/index\.js$/));
+importAll(require.context('/srv/web/app/site/posts', true, /^\.\/[\w\-]+\/blocks\/[\w\-]+\/index\.js$/));
 
-// // Import all ./blocks/*/*.js files (where the filename matches the directory)
-// function importAll (r) { r.keys().forEach(r) }
-// importAll(require.context('/srv/web/app/site/src/blocks', true, /\/(.*)\/\1\.js/));
+// Custom scripting below
+//

@@ -1,0 +1,37 @@
+.nf-location {
+  text-align: center;
+  padding-bottom: 50px;
+}
+
+.nf-location a {
+  text-decoration: none;
+  font-weight: bold;
+  color: #000000;
+}
+
+.nf-location__name {
+  font: italic 400 72px/1 ltc-bodoni-175, serif;
+  color: #C9CED9;
+  margin: 0 0 35px 0;
+}
+
+.nf-location__office {
+  font: normal 700 27px/1 soleil, sans-serif;
+  color: #212121;
+  margin: 0 0 28px 0;
+}
+
+.nf-location__address {
+  font: normal 400 18px/1.5 proxima-nova, sans-serif;
+  color: #000;
+  margin: 0 0 10px 0;
+}
+
+.nf-location__phone, 
+.nf-location__email {
+  font: normal 400 18px/1.5 proxima-nova, sans-serif;
+  color: #000;
+  margin: 0;
+}
+
+

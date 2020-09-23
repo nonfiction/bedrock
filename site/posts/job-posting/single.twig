@@ -1,0 +1,28 @@
+{% extends "base.twig" %}
+
+{% block content %}
+<article class="content post-type-{{post.post_type}}" id="post-{{post.ID}}">
+
+  <div class="container" style="max-width:960px;">
+    <h1 class="article-h1">{{ post.title }}</h1>
+    {{post.content}}
+
+    <br>
+  <div class="wp-block-buttons">
+    <div class="wp-block-button" style="float:left;">
+      <a class="wp-block-button__link" href="#">Apply Now</a>
+    </div>
+    <div class="wp-block-button" style="float:right;">
+      <a class="wp-block-button__link" href="#">Other Opportunities</a>
+    </div>
+  </div>
+    <br>
+
+  </div>
+
+</article>
+{% endblock %}
+
+{% block footer %}
+  {{ function('wp_footer') }}
+{% endblock %}

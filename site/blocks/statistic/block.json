@@ -1,0 +1,33 @@
+{
+  "name": "nf/statistic",
+
+  "title": "Statistic",
+  "icon": "dashicons-media-spreadsheet",
+  "category": "text",
+
+  "supports": {
+     "align": false,
+     "html": true
+  },
+
+  "attributes": {
+    "number":  { "type": "string" },
+    "extra":   { "type": "string" },
+    "label":   { "type": "string" },
+    "link":    { "type": "string" }
+  },
+
+  "example": {
+    "attributes": {
+      "number": "123",
+      "extra": "+",
+      "label":  "Total Impressions"
+    }
+  },
+
+  "styles": [
+    { "name": "default", "label": "Default", "isDefault": true },
+    { "name": "center", "label": "Center" }
+  ]
+
+}

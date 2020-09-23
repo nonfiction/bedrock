@@ -1,0 +1,22 @@
+.wp-block-columns {
+  max-width: 1094px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.wp-block-columns.is-style-full {
+  align-self: stretch;
+}
+
+.wp-block-column.is-vertically-aligned-top.is-style-full,
+.wp-block-column.is-style-full {
+  align-self: stretch;
+  display: flex;
+}
+
+.wp-block-columns.is-style-narrow {
+  max-width: 906px;
+}
+
+
+/* .wp-block-column.is-vertically-aligned-top */

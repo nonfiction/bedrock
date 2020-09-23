@@ -1,0 +1,20 @@
+{
+  "name": "nf/tabbed-posts",
+
+  "title": "Tabbed Posts",
+  "icon": "dashicons-table-col-after",
+  "category": "embed",
+
+  "supports": {
+     "align": ["wide", "full"],
+     "html": true
+  },
+
+  "attributes": {
+    "align": { "type": "string", "default": "wide" },
+    "heading": { "type": "string" },
+    "content": { "type": "string" },
+    "term": { "type": "string" }
+  }
+
+}

@@ -1,0 +1,19 @@
+{
+  "name": "nf/team-member",
+
+  "title": "Team Member",
+  "icon": "dashicons-admin-users",
+  "category": "common",
+
+  "supports": {
+     "html": false
+  },
+
+  "attributes": {
+    "id": { "type": "integer" }
+  },
+
+  "example": {
+    "attributes": {}
+  }
+}

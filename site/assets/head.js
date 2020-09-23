@@ -1,17 +1,17 @@
 // This is contains JavaScript for the theme that loads in the <head>
 // WP hook: wp_enqueue_scripts
 
-// Import all ./site/src/posts/*/script.js files
+// Import post-related script.js files
+// ./site/posts/*/script.js
 function importAll (r) { r.keys().forEach(r) }
-importAll(require.context('/srv/web/app/site/src/posts', true, /\/script\.js$/));
+importAll(require.context('/srv/web/app/site/posts', true, /^\.\/[\w\-]+\/script\.js$/));
 
 // Include the main stylesheet
 import './style.css';
 
+// Custom scripting below
+//
 
-
-
-// Convert <img src="icon.svg" /> into <svg>...inline-svg-icon...</svg>
 import '@iconfu/svg-inject';
 
 window.SVGInject.setOptions({
@@ -20,6 +20,11 @@ window.SVGInject.setOptions({
     svg.removeAttribute('height');
   }
 });
+
+/*
+global.q = ( selector ) => {
+  return document.querySelectorAll( selector );
+}
 
 // Create new HTML element from string
 const el = ( domstring ) => {
@@ -40,3 +45,4 @@ const prepend = ( selector, domstring ) => {
     parent.insertBefore( el(domstring), parent.childNodes[0] );
   });
 }
+*/

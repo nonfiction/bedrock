@@ -1,0 +1,54 @@
+{
+
+  "name": "news_release",
+
+  "names": {
+    "slug": "news"
+  },
+
+  "archive": {
+    "posts_per_page": 100,
+    "orderby": "date",
+    "order": "DESC",
+    "nopaging": true
+  },
+
+  "menu_icon": "dashicons-megaphone",
+
+  "admin_cols": {
+    "title": { 
+      "title": "Title" 
+    },
+    "featured_image": { 
+      "title": "Image", 
+      "featured_image": "thumbnail",
+      "height": 50,
+      "default": "DESC"
+    },
+    "date": { 
+      "title": "Date", 
+      "default": "DESC" 
+    }
+  },
+
+  "admin_filters": {
+    "author": {
+      "post_author": true
+    }
+  },
+
+  "metaboxes": [{
+    "title": "Post Properties",
+    "context": "side",
+    "fields": [{
+      "name"         : "Featured",
+      "type"         : "checkbox",
+      "desc"         : "Sticky this news release?"
+    },{
+      "name"         : "Author",
+      "type"         : "text",
+      "desc"         : "Name and title of the writer"
+    }]
+  }]
+
+}

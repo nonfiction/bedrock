@@ -1,0 +1,45 @@
+{
+
+  "name": "service",
+
+  "archive": {
+    "posts_per_page": 10,
+    "orderby": "date",
+    "order": "DESC",
+    "nopaging": true
+  },
+
+  "menu_icon": "dashicons-yes-alt",
+  "unsupports": [ "thumbnail", "page-attributes" ],
+
+  "meta": [{
+    "tagline": { "type": "string" }
+  }],
+
+  "metaboxes": [{
+    "title": "Post Properties",
+    "context": "side",
+    "fields": [{
+      "name"         : "Photo",
+      "type"         : "file",
+      "options"      : { "url": false },
+      "text"         : { "add_upload_file_text": "Add or Upload Image" },
+      "query_args"   : { "type": [ "image/gif", "image/jpeg", "image/png" ] },
+      "preview_size" : "small"
+    },{
+      "name"         : "Icon",
+      "type"         : "file",
+      "options"      : { "url": false },
+      "text"         : { "add_upload_file_text": "Add or Upload Image" },
+      "query_args"   : { "type": [ "application/svg", "image/gif", "image/jpeg", "image/png" ] },
+      "preview_size" : "small"
+    },{
+      "id"           : "tagline",
+      "name"         : "Tagline",
+      "type"         : "text",
+      "desc"         : "Card flip text"
+    }]
+  }],
+
+  "version": 1
+}

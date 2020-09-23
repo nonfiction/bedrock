@@ -1,0 +1,17 @@
+{
+  "name": "nf/news-releases",
+
+  "title": "News Releases",
+  "icon": "dashicons-megaphone",
+  "category": "embed",
+
+  "supports": {
+     "align": ["wide", "full"],
+     "html": true
+  },
+
+  "attributes": {
+    "align": { "type": "string", "default": "wide" }
+  }
+
+}

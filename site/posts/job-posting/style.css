@@ -1,0 +1,7 @@
+.nf-job-posting a {
+  text-decoration: none;
+  color: #ADB4BF;
+}
+.nf-job-posting a:hover {
+  text-decoration: underline;
+}

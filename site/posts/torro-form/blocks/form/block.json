@@ -1,0 +1,20 @@
+{
+  "name": "nf/form",
+
+  "title": "Form",
+  "icon": "dashicons-forms",
+  "category": "text",
+
+  "supports": {
+     "html": false
+  },
+
+  "attributes": {
+    "id": { "type": "integer" },
+    "heading": { "type": "string" }
+  },
+
+  "example": {
+    "attributes": {}
+  }
+}

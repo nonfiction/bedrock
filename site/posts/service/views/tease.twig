@@ -1,0 +1,18 @@
+<div class="nf-service-tease">
+  <div class="nf-service-tease__card">
+    <div class="nf-service-tease__front" style="background-image:url( {{ post.meta('photo') }} );">
+      <div class="nf-service-tease__details">
+        <h2 class="nf-service-tease__heading">{{ post.title }}</h2>
+        <!-- <h2 class="nf&#45;service&#45;tease__heading">...{{ post.reading_time() }}</h2> -->
+      </div>
+    </div>
+    <a class="nf-service-tease__back" href="{{ post.link }}">
+      <div class="nf-service-tease__details">
+        <img class="nf-service-tease__icon" src="{{ post.meta('icon') }}" />
+        <h2 class="nf-service-tease__heading">{{ post.title }}</h2>
+        <p class="nf-service-tease__tagline">{{ post.meta('tagline') }}</p>
+      </div>
+      <span class="nf-service-tease__more">More</span>
+    </a>
+  </div>
+</div>

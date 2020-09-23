@@ -1,0 +1,135 @@
+
+.nf--is-bordered {
+  border: 1px solid #ddd !important;
+  padding: 10px !important;
+  box-sizing: border-box !important;
+  height: auto !important;
+}
+
+.nf--is-tall {
+  min-height: 150px;
+}
+
+
+
+.nf-tabbed-posts {
+  max-width: 1094px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (min-width: 600px) {
+  .nf-tabbed-posts__grid {
+    display: grid;
+    grid-template:
+        "heading  posts"
+        "tabs     posts"
+        / 1fr     1fr
+    ;
+  }
+}
+
+.nf-tabbed-posts__heading {
+  grid-area: heading;
+}
+
+.nf-tabbed-posts__heading h2.is-style-decorative {
+  margin-top: 0;
+}
+
+.nf-tabbed-posts__tabs {
+  grid-area: tabs;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.nf-tabbed-posts__tabs > li {
+  display: block;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  font: normal 400 27px/37px ltc-bodoni-175, serif;
+  padding-bottom: 10px;
+}
+
+.nf-tabbed-posts__tabs > li > a {
+  text-decoration: none;
+  color: #ADB4BF;
+}
+.nf-tabbed-posts__tabs > li > a:hover, 
+.nf-tabbed-posts__tabs > li.is-active > a { 
+  color: #212121;
+}
+
+.nf-tabbed-posts__posts {
+  grid-area: posts;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  position: relative;
+  height: 100%;
+}
+
+.nf-tabbed-posts__posts > li {
+  display: none;
+  list-style-type: none;
+  /* position: absolute; */
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.nf-tabbed-posts__posts > li::after {
+  content: '';
+  background: rgba(0,0,0,0.5);
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  position: absolute;
+  z-index: 0;
+}
+
+.nf-tabbed-posts__posts > li.is-active {
+  display: block;
+}
+
+
+.nf-tabbed-post {
+  background-size: cover;
+  color: #fff;
+}
+
+.nf-tabbed-post__panel {
+  padding: 50px;
+  color: #fff;
+  position: relative;
+  z-index: 1;
+  box-sizing: border-box;
+}
+
+.nf-tabbed-post h3.nf-tabbed-post__heading {
+  text-align: center;
+  font: normal 700 18px/1.2 soleil, sans-serif;
+  position: relative;
+  text-transform: uppercase;
+  margin-bottom: 40px;
+}
+
+.nf-tabbed-post h3.nf-tabbed-post__heading::after {
+  content: '';
+  height: 4px;
+  background: #fff;
+  position: absolute;
+  left: calc(50% - 25px);
+  width: 50px;
+  bottom: -15px;
+}
+
+.nf-tabbed-post .nf-tabbed-post__content,
+.nf-tabbed-post .nf-tabbed-post__content p {
+  font: normal 400 16px/26px proxima-nova, sans-serif;
+  color: #fff;
+}
+

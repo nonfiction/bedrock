@@ -1,0 +1,37 @@
+{
+  "name": "nf/banner",
+
+  "title": "Banner",
+  "icon": "dashicons-cover-image",
+  "category": "media",
+
+  "supports": {
+     "align": false,
+     "html": false
+  },
+
+  "attributes": {
+    "align":          { "type": "string", "default": "full" },
+    "heading":        { "type": "string" },
+    "content":        { "type": "string" },
+    "background_id":  { "type": "integer" }, 
+    "background_url": { "type": "string" },
+    "icon_id":  { "type": "integer" }, 
+    "icon_url": { "type": "string" },
+    "video_id":  { "type": "integer" }, 
+    "video_url": { "type": "string" }
+  },
+
+  "example": {
+    "attributes": {
+      "heading": "Hello World",
+      "content": "What a wonderful day!"
+    }
+  },
+
+  "styles": [
+    { "name": "default", "label": "Default", "isDefault": true },
+    { "name": "video", "label": "Video" }
+  ]
+
+}

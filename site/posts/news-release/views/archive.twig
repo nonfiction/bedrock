@@ -1,0 +1,49 @@
+{% extends "base.twig" %}
+
+{% block content %}
+  <article class="content post-type-{{post.post_type}}">
+    <div class="container">
+
+      {% for post in posts %}
+        {% if post.meta('featured') %}
+
+          {% set className = 'is-featured' %}
+          {% include "news-release/views/tease.twig" %}
+
+        {% endif %}
+      {% endfor %}
+
+      <h2 class="nf-news-release-list-heading is-style-decorative">{{ archive_title }}</h2>
+      {{ archive_top }}
+
+      <div class="nf-news-release-list wp-block-nf-grid" data-columns="3">
+        {% set count = 0 %}
+        {% for post in posts %}
+          {% if not post.meta('featured') %}
+
+            {% set count = count + 1 %}
+            {% if count > 12 %}{% set className = 'is-hidden' %}{% endif %}
+            {% include "news-release/views/tease.twig" %}
+
+          {% endif %}
+        {% endfor %}
+      </div>
+
+
+      <div class="wp-block-buttons nf-news-release-list__button">
+        <div class="wp-block-button"><a class="wp-block-button__link">Load More</a></div>
+      </div>
+
+      <div class="nf-banner nf-banner--fadeless" style="background-image:url({{ archive_bottom|extract_image }});"> 
+        <div class="nf-banner__inner">
+          <div class="nf-banner__content" style="max-width:none;">{{ archive_bottom|striptags('<div><p><blockquote><cite>') }}</div>
+        </div>
+      </div>
+
+    </div>
+  </article>
+{% endblock %}
+
+{% block footer %}
+  {{ function('wp_footer') }}
+{% endblock %}

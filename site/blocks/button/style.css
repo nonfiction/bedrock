@@ -1,0 +1,65 @@
+.wp-block-buttons { 
+  overflow: hidden;
+}
+
+.wp-block-buttons .wp-block-button {
+  margin-bottom: 30px;
+}
+
+.wp-block-button__link,
+.wp-block-button__link:visited {
+  display: inline-block;
+  font: normal 700 13px/1 soleil, sans-serif;
+  color: #121212;
+  background: #fff;
+  border: 2px solid #0F0F0F;
+  text-transform: uppercase;
+  padding: 10px 40px;
+  text-decoration: none;
+  border-radius: 0;
+}
+
+.wp-block-button__link:active, 
+.wp-block-button__link:focus, 
+.wp-block-button__link:hover {
+  background: #121212;
+  color: #fff;
+  text-decoration: none;
+}
+
+.wp-block-button.is-style-download .wp-block-button__link {
+  font-size: 11px;
+  font-weight: 800;
+  background: #AF5E23 url(./download.svg) no-repeat;
+  background-position: right 20px center;
+  padding-right: 40px;
+}
+
+
+.block-editor-block-styles .wp-block-button__link{
+  /* display: inline-block !important; */
+  /* font-weight: 800 !important; */
+  /* text-transform: uppercase !important; */
+  /* background: #FFB040 !important; */
+  /* color: #fff !important; */
+  /* border-radius: 25px !important; */
+  /* font-size: 14px !important; */
+  /* padding: 10px 20px !important; */
+  /* text-decoration: none !important; */
+}
+
+
+.block-editor-block-styles .is-style-download .wp-block-button__link {
+  /* background: #AF5E23 !important; */
+  /* font-size: 11px !important; */
+  /* font-weight: 800 !important; */
+}
+.wp-block-button.is-float-right {
+  float: right;
+}
+
+.wp-block-button.iseafloat-right::after {
+  content: "";
+  clear: both;
+  display: table;
+}

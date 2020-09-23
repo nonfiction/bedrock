@@ -1,0 +1,32 @@
+{
+  "name": "nf/icon-text",
+
+  "title": "Icon Text",
+  "icon": "dashicons-id-alt",
+  "category": "text",
+
+  "supports": {
+     "align": false,
+     "html": true
+  },
+
+  "attributes": {
+    "heading":        { "type": "string" },
+    "content":        { "type": "string" },
+    "icon_id":  { "type": "string" }, 
+    "icon_url":   { "type": "string" }
+  },
+
+  "example": {
+    "attributes": {
+      "heading":    "Heading",
+      "content":  "Content"
+    }
+  },
+
+  "styles": [
+    { "name": "default", "label": "Default", "isDefault": true },
+    { "name": "center", "label": "Center" }
+  ]
+
+}

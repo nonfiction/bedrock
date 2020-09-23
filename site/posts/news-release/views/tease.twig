@@ -1,0 +1,27 @@
+<a class="nf-news-release-tease {{className}}" href="{{ post.link }}">
+
+  {% if post.thumbnail.large %}
+    {% set image = post.thumbnail.large %}
+  {% elseif post.thumbnail.src %}
+    {% set image = post.thumbnail.src %}
+  {% else %}
+    {% set image = post.first_img %}
+  {% endif %}
+  {% set fallback = img ~ '/news/' ~ random([1,2,3,4,5,6]) ~ '.jpg' %}
+
+  <div class="nf-news-release-tease__image">
+    <figure class="nf-news-release-tease__figure" style="background-image:url({{ image }}),url({{ fallback }});"></figure>
+  </div>
+
+
+  <div class="container">
+    <div class="nf-news-release-tease__heading">
+      <div class="nf-news-release-tease__date">
+        <div class="nf-news-release-tease__month">{{ post.date|date('M') }}</div>
+        <div class="nf-news-release-tease__day">{{ post.date|date('m') }}</div>
+      </div>
+      <h3 class="nf-news-release-tease__title">{{ post.title }}</h3>
+    </div>
+  </div>
+
+</a>

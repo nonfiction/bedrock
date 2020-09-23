@@ -1,0 +1,58 @@
+{% extends "base.twig" %}
+
+{% block content %}
+  <article class="content post-type-{{post.post_type}}" id="post-{{post.ID}}">
+    <div class="container">
+
+      {% if post.thumbnail.large %}
+        {% set image = post.thumbnail.large %}
+      {% elseif post.thumbnail.src %}
+        {% set image = post.thumbnail.src %}
+      {% else %}
+        {% set image = false %}
+      {% endif %}
+
+      <div class="nf-banner-news"> 
+        <div class="nf-banner-news__title">
+          <h1 class="nf-banner-news__heading">{{ post.title }}</h1>
+          <p class="nf-banner-news__details">Posted on {{ post.date }} {{ post.meta('author') }}</p>
+        </div>
+        {% if image %}
+        <figure class="nf-banner-news__figure">
+          <img class="nf-banner-news__image" src="{{ image }}" />
+        </figure>
+        {% endif %}
+      </div>
+
+
+      <div class="container container-news" >
+        {{post.content}}
+      </div>
+
+        <br>
+
+      <ul class="nf-news-release-nav">
+        <li class="nf-news-release-navlink is-prev">
+          <a{% if post.prev.link %} href="{{ post.prev.link }}"{% else %} class="is-hidden"{% endif %}>Previous Article</a>
+        </li>
+        <li>
+          <div class="wp-block-buttons">
+            <div class="wp-block-button"><a class="wp-block-button__link" href="../">Back to News</a></div>
+          </div>
+        </li>
+        <li class="nf-news-release-navlink is-next">
+          <a{% if post.next.link %} href="{{ post.next.link }}"{% else %} class="is-hidden"{% endif %}>Next Article</a>
+        </li>
+      </ul>
+
+        <br>
+        <br>
+
+    </div>
+
+  </article>
+{% endblock %}
+
+{% block footer %}
+  {{ function('wp_footer') }}
+{% endblock %}

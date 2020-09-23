@@ -9,20 +9,28 @@
   ],
   "autoload": {
     "psr-4": {
-      "nf\\": "src/classes/"
+      "nf\\": ["src/","classes/","lib/"]
     }
   },
   "require": {
-    "humanmade/s3-uploads": "^2.2",
-    "wpackagist-plugin/debug-bar": "^1.0",
-    "wpackagist-plugin/disable-comments": "^1.10",
-    "wpackagist-plugin/imsanity": "^2.6",
+    "wpackagist-plugin/wp-crontrol": "^1.8",
+    "wpackagist-plugin/wordpress-importer": "^0.7.0",
+    "wpackagist-plugin/user-switching": "^1.5",
+    "wpackagist-plugin/torro-forms": "^1.0",
+    "wpackagist-plugin/stream": "^3.5.1",
+    "wpackagist-plugin/post-type-switcher": "^3.2",
     "wpackagist-plugin/members": "^3.0",
+    "wpackagist-plugin/imsanity": "^2.6",
+    "wpackagist-plugin/archive-control": "^1.3",
+    "wpackagist-plugin/disable-comments": "^1.10",
     "wpackagist-plugin/query-monitor": "^3.5",
     "wpackagist-plugin/safe-redirect-manager": "^1.9",
-    "wpackagist-plugin/stream": "^3.5",
-    "wpackagist-plugin/torro-forms": "^1.0",
-    "wpackagist-plugin/user-switching": "^1.5",
-    "wpackagist-plugin/wp-crontrol": "^1.8"
+    "wpackagist-plugin/debug-bar-roles-and-capabilities": "^0.1.1",
+    "wpackagist-plugin/debug-bar-post-types": "^2.0",
+    "wpackagist-plugin/debug-bar-constants": "^2.0",
+    "wpackagist-plugin/tdd-debug-bar-post-meta": "^0.1.0",
+    "nielsdeblaauw/query-monitor-twig-profile": "^1.0",
+    "wp-graphql/wp-graphql": "^0.12.3",
+    "wp-graphql/wp-graphiql": "^1.0"
   }
 }

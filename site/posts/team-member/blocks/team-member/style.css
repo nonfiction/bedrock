@@ -1,0 +1,120 @@
+.nf-team-member {
+
+}
+
+
+.nf-team-member__overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  z-index: 1000;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #fff;
+  align-items: center;
+  justify-content: center;
+  padding-top: 100px;
+  padding-bottom: 100px;
+}
+
+.nf-team-member__overlay::after {
+  content: ' ';
+  display: block;
+  width: 40px;
+  height: 40px;
+  /* background: transparent url(../../../assets/img/layout/close.svg) 50% 50% no-repeat; */
+  right: 20px;
+  top: 40px;
+  position: absolute;
+}
+
+.nf-team-member--active .nf-team-member__overlay {
+  display: flex;
+}
+
+.nf-team-member__details {
+  position: relative;
+  margin: 0 auto;
+  background: #fff;
+  width: 90vw;
+  height: 70vh;
+  min-height: 200px;
+  overflow: auto;
+  display: flex;
+  flex-direction: row;
+}
+
+.nf-team-member__figure {
+  /* max-width: 368px; */
+  margin: 0;
+  display: block;
+  flex: 1 1 40%;
+}
+
+.nf-team-member__image {
+  display: block;
+  width: 100%;
+}
+
+.nf-team-member__text {
+  display: block;
+  padding: 20px 75px;
+  flex: 1 1 60%;
+}
+
+.nf-team-member__name {
+  font: normal 700 27px/1.2 soleil, sans-serif;
+  color: #212121;
+}
+
+.nf-team-member__role {
+  font: normal 700 18px/1.2 soleil, sans-serif;
+  color: #212121;
+  text-transform: uppercase;
+}
+
+.nf-team-member__content {
+  padding-top: 35px;
+  font: normal 700 18px/1.2 soleil, sans-serif;
+}
+
+.nf-team-member__link {
+  display: block;
+  position: relative;
+  background-color: transparent;
+  background-size: cover;
+  width: 100%;
+  height: 364px;
+  overflow: hidden;
+}
+
+
+.nf-team-member__name-role {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  bottom: -100%;
+  background: rgba(255,255,255,1);
+  padding: 10px 0 12px;
+  transition: bottom 0.3s ease-in-out;
+}
+
+.editor .nf-team-member__link .nf-team-member__name-role,
+.nf-team-member__link:hover .nf-team-member__name-role {
+  bottom: 0%;
+}
+
+.nf-team-member__name-role .nf-team-member__name {
+  font-size: 18px;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.nf-team-member__name-role .nf-team-member__role {
+  color: #C9CFD9;
+  text-align: center;
+  text-transform: none;
+}

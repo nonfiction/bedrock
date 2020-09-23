@@ -1,0 +1,33 @@
+{
+  "name": "nf/influencer",
+
+  "title": "Influencer",
+  "icon": "dashicons-testimonial",
+  "category": "text",
+
+  "supports": {
+     "align": false,
+     "html": true,
+     "anchor": true,
+		 "lightBlockWrapper": false
+  },
+
+  "attributes": {
+    "valign":     { "type": "string" },
+    "halign":     { "type": "string" },
+    "width":     { "type": "string" },
+    "name":   { "type": "string" },
+    "role":   { "type": "string" },
+    "content":   { "type": "string" },
+    "photo_id":  { "type": "string" }, 
+    "photo_url": { "type": "string" }
+  },
+
+  "example": {
+    "attributes": {
+      "heading":    "Heading",
+      "content":  "Content"
+    }
+  }
+
+}

@@ -1,0 +1,27 @@
+
+p {
+  font: normal 400 18px/1.5 proxima-nova, sans-serif;
+  /* color: #000; */
+  color: #212121;
+  margin: 0 0 10px 0;
+
+}
+
+.content > .container > p {
+  max-width: 1094px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+p.is-style-fancy {
+  color: #212121;
+  font: normal 400 27px/37px ltc-bodoni-175, serif !important;
+  margin: 0 auto;
+  padding: 80px 0;
+  max-width: 936px;
+}
+
+
+.content p:empty {
+   display: none;
+}

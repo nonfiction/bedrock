@@ -1,0 +1,31 @@
+{
+  "name": "nf/location",
+
+  "title": "Location",
+  "icon": "dashicons-location",
+  "category": "common",
+
+  "supports": {
+     "align": false,
+     "html": true
+  },
+
+  "attributes": {
+    "name":        { "type": "string" },
+    "office":        { "type": "string" },
+    "address":        { "type": "string" },
+    "phone":        { "type": "string" },
+    "email":        { "type": "string" }
+  },
+
+  "example": {
+    "attributes": {
+      "name":    "YYC",
+      "office":  "Head Office",
+      "address": "123 1 Avenue SE Calgary, AB T2G 0V0",
+      "phone":   "403.404.3333",
+      "email":   "info@info.com" 
+    }
+  }
+
+}

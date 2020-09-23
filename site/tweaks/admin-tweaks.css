@@ -1,0 +1,47 @@
+/* Replace WP icon in full-screen Block Editor              */
+/* -------------------------------------------------------- */
+@media (min-width: 782px) {
+  .edit-post-fullscreen-mode-close.has-icon,
+  .edit-post-fullscreen-mode-close.has-icon:hover {
+    background: #000 url(../assets/img/logo.jpg) no-repeat !important;
+    background-size: contain !important;
+    transition: filter 0.3s ease;
+  }
+  .edit-post-fullscreen-mode-close.has-icon:hover {
+    filter: grayscale(100%);
+  }
+  .edit-post-fullscreen-mode-close.has-icon svg { 
+    display: none; 
+  }
+}
+
+.update-nag {
+  display: none;
+}
+
+
+/* Torro Forms                                              */
+/* -------------------------------------------------------- */
+.welcome-to-torro { display: none; }
+
+
+/* MemberPress Members                                      */
+/* -------------------------------------------------------- */
+a[href="admin.php?page=members-settings&view=add-ons"],
+a[href="admin.php?page=members-payments"],
+a[href="admin.php?page=members-about"],
+#wpbody .members-review-notice {
+  display: none !important;
+}
+
+
+/* Imsanity                                                 */
+/* -------------------------------------------------------- */
+#ewwwio-promo { display: none !important; }
+
+
+/* WP Crontrol                                              */
+/* -------------------------------------------------------- */
+a[href="tools.php?page=crontrol_admin_manage_page&action=new-php-cron"] {
+  display: none !important;
+}

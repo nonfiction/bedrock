@@ -1,0 +1,100 @@
+.nf-form {
+  background: rgba(255,255,255,0.7);
+  padding: 40px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+h3.nf-form__heading {
+  font: normal 700 27px/35px soleil, sans-serif !important;
+  color: #212121 !important;
+  margin: 0 !important;
+}
+
+@media (min-width: 600px) {
+.nf-form__fields {
+  display: grid;
+  grid-template:
+    "company-name  project-description"
+    "email         project-description"
+    "phone-number  project-description"
+    / 1fr          1fr
+  ;
+}
+}
+
+.torro-element-wrap.company-name { grid-area: company-name; }
+.torro-element-wrap.email { grid-area: email; }
+.torro-element-wrap.phone-number { grid-area: phone-number; }
+.torro-element-wrap.project-description { grid-area: project-description; }
+
+
+.torro-form { }
+.torro-form span[aria-hidden] { display: none; }
+.torro-form label { display: none; }
+.torro-element-description { display: none; }
+
+.torro-element-wrap {
+  height: 100%;
+}
+
+.torro-element-wrap > div { 
+  /* height: 100%;  */
+  padding: 5px;
+  padding-bottom: 0;
+}
+
+.torro-form input,
+.torro-form textarea {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  font: normal 700 16px/20px soleil, sans-serif;
+  color: #212121;
+  border-radius: 0;
+  margin: 0;
+  box-sizing: border-box;
+  max-width: 100%;
+  padding: 10px;
+  background: #E7EAEF95;
+}
+
+.torro-form input::placeholder,
+.torro-form textarea::placeholder {
+  color: #212121;
+  opacity: 1; 
+}
+
+
+.torro-form input:focus,
+.torro-form textarea:focus {
+  box-shadow: none;
+  outline: 2px solid #212121;
+}
+
+.torro-form textarea {
+  height: 150px;
+}
+
+.torro-pager {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: flex-end;
+  justify-content: flex-end;
+}
+
+.torro-pager > .next {
+  display: inline-block;
+}
+
+button.torro-button {
+  display: inline-block;
+  font: normal 700 13px/1 soleil, sans-serif;
+  color: #121212;
+  background: #fff;
+  border: 2px solid #0F0F0F;
+  text-transform: uppercase;
+  padding: 10px 20px;
+  text-decoration: none;
+  border-radius: 0;
+}
