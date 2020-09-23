@@ -1,6 +1,6 @@
 // This is the blocks entry file for webpack--do not edit!
 
-// import '/srv/dev/blocks-bundle.js';
+// WP hook: enqueue_block_assets (in footer)
 import '/srv/web/app/site/assets/blocks.js';
 
 if (module.hot) {
