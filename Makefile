@@ -47,7 +47,7 @@ logs!:                        ; $(docker-compose-remote) logs -f
 		nonfiction/bedrock:env dotenv
 
 assets:
-	$(docker-compose-prod) run --rm dev npx ncu -um
+	# $(docker-compose-prod) run --rm dev npx ncu -um
 	$(docker-compose-prod) run --rm dev npm update --save-dev
 	$(docker-compose-prod) run --rm dev webpack --progress
 
