@@ -7,6 +7,10 @@
       "url": "https://wpackagist.org"
     },
     {
+      "type": "composer",
+      "url": "https://composer.nonfiction.ca"
+    },
+    {
       "type": "path",
       "url": "web/app/site"
     }
