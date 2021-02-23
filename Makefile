@@ -58,6 +58,12 @@ rebuild!: tmp-dir! ; $(docker-compose-remote) build --pull --no-cache srv
 
 upgrade: .env assets rebuild update-db
 
+# make composer require=wpackagist-plugin/name
+# make composer require=wpackagist-theme/name
+composer:
+	test $(require) && $(docker-compose) run --rm srv composer require --no-update $(require)
+	# test $(remove) && $(docker-compose) run --rm srv composer remove --no-update $(remove) 
+
 # make plugin/theme/package add=name_of_package
 plugin:  ; test $(add) && $(docker-compose) run --rm srv composer require --no-update wpackagist-plugin/$(add)
 theme:   ; test $(add) && $(docker-compose) run --rm srv composer require --no-update wpackagist-theme/$(add)

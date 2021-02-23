@@ -19,7 +19,7 @@ $webroot_dir = $root_dir . '/web';
 
 
 // Use Dotenv to set required environment variables and load .env file in root
-$dotenv = Dotenv\Dotenv::createImmutable($root_dir);
+$dotenv = Dotenv\Dotenv::createUnsafeImmutable($root_dir);
 if (file_exists($root_dir . '/.env')) {
   $dotenv->load();
   $dotenv->required(['APP_NAME', 'APP_HOST']);
@@ -29,7 +29,7 @@ if (file_exists($root_dir . '/.env')) {
 }
 
 // Salts are generated in a separate .env file
-$dotenv_salts = Dotenv\Dotenv::createImmutable($root_dir, 'salts.env');
+$dotenv_salts = Dotenv\Dotenv::createUnsafeImmutable($root_dir, 'salts.env');
 if (file_exists($root_dir . '/salts.env')) {
   $dotenv_salts->load();
 }
