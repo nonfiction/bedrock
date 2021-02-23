@@ -5,11 +5,15 @@
     {
       "type": "composer",
       "url": "https://wpackagist.org"
+    },
+    {
+      "type": "composer",
+      "url": "https://composer.nonfiction.ca"
     }
   ],
   "autoload": {
     "psr-4": {
-      "nf\\": ["src/","classes/","lib/"]
+      "nf\\": ["src/"]
     }
   },
   "require": {
