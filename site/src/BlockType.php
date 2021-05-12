@@ -55,6 +55,7 @@ class BlockType {
 
     // Save $args to object
     static::$args = $args;
+    // do_action( 'qm/debug', static::$args );
 
     // Register block
     static::register_custom_block_type();
@@ -65,7 +66,7 @@ class BlockType {
 
 
   protected static function render_callback( $render ) {
-    return function( $attributes, $inner = '') use ($render) {
+    return function( $attributes, $inner = 'default') use ($render) {
     
       // Merge the Timber context with the WP attributes, add inner blocks
       $context = array_merge( Timber::context(), $attributes );
@@ -73,6 +74,8 @@ class BlockType {
 
       // Run the passed render() function to get the twig template and updated context
       $template = ($render)( $context );
+
+      // do_action( 'qm/debug', 'after: ' . $context['inner'] );
 
       // Get the compiled template from twig file
       if ( ends_with($template, '.twig') ) {
@@ -82,6 +85,8 @@ class BlockType {
       } else {
         $html = Timber::compile_string( $template, $context );
       }
+
+      // do_action( 'qm/debug', 'html: ' . $html );
 
       // Return the compiled template
       return $html;
@@ -102,6 +107,7 @@ class BlockType {
 
 
   protected static function register_post_meta() {
+    do_action( 'qm/debug', static::$props['meta'] );
     foreach(static::$props['meta'] as $meta_args) {
 
       $post_type = $meta_args['post_type'] ?? '';
@@ -117,7 +123,8 @@ class BlockType {
           'type' => 'string', // string, boolean, integer, number, array, object
           'single' => true,
 
-        ], static::$meta_args) ); 
+        // ], static::$meta_args) ); 
+        ], $meta_args) ); 
       }
     }
   }

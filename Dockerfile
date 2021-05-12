@@ -12,3 +12,6 @@ RUN composer dump-autoload -o -d /srv
 
 # Copy the full codebase
 COPY --chown=www-data:www-data ./site /srv/web/app/site
+
+# Copy the pagespeed configuration
+COPY ./pagespeed.conf /etc/apache2/mods-available/pagespeed.conf

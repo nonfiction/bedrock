@@ -34,6 +34,8 @@ class JobPosting extends PostType {
 // Register Custom Post Type
 add_action( 'init', function() {
 
-  JobPosting::register_post_type( __DIR__ . '/post.json' );
+  JobPosting::register_post_type([
+    "menu_icon" => "dashicons-pressthis",
+  ]);
 
 }, 18);

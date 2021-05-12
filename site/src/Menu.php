@@ -13,7 +13,9 @@ class Menu extends \Timber\Menu {
     foreach( $items as $item ) {
 
       $classes = [ 'menu-' . $item->slug ];
-      if ( $item->current ) $classes[] = 'current';
+      $classes[] = 'leaf';
+      // if ( $item->current ) $classes[] = 'current';
+      if ( $item->current ) $classes[] = 'active';
       if ( $item->current_item_parent ) $classes[] = 'parent';
       if ( $item->current_item_ancestor ) $classes[] = 'ancestor';
       if ( $item->current or $item->current_item_parent or $item->current_item_ancestor ) {

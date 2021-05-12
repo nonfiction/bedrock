@@ -46,12 +46,6 @@ registerBlockType( json, {
             options={ options }
             onChange={ ( columns ) => { props.setAttributes( { columns } ); } }
           />
-          <SelectControl
-            label='Width'
-            value={ width }
-            options={[ {label:'Narrow',value:'narrow'}, {label:'Wide',value:'wide'} ]}
-            onChange={ ( width ) => { props.setAttributes( { width } ); } }
-          />
         </PanelBody>
       </InspectorControls>
 
@@ -72,9 +66,11 @@ registerBlockType( json, {
 
   save: (props) => {
 
-    let { columns, width } = props.attributes;
-    width = width || 'narrow';
-    let classes = classnames( props.className, 'wp-block-nf-grid', `is-${width}` );
+    // let { columns, width } = props.attributes;
+    let { columns } = props.attributes;
+    // width = width || 'narrow';
+    // let classes = classnames( props.className, 'wp-block-nf-grid', `is-${width}` );
+    let classes = classnames( props.className, 'wp-block-nf-grid' );
     // let classes = classnames( props.className, 'wp-block-nf-grid' );
 
     return (

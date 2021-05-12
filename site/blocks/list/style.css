@@ -1,13 +1,8 @@
-.content ul,
-ul.wp-block[data-type="core/list"] {
-  padding: 0;
-  margin: 0 auto;
-}
-
-.content ul li,
-ul.wp-block[data-type="core/list"] li {
-  padding: 0;
-  margin: 0;
-  color: #212121;
-  padding-bottom: 10px;
+.editor-styles-wrapper ul.wp-block li, 
+.editor-styles-wrapper ol.wp-block li, 
+li {
+  font-size: 17px;
+  margin-top: 17px;
+  margin-bottom: 17px;
+  line-height: 25px;
 }

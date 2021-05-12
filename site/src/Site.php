@@ -24,7 +24,7 @@ class Site {
     $timber = new Timber\Timber();
 
     // Set the default template directories
-    Timber::$dirname = [ '../../posts', '../../views' ];
+    Timber::$dirname = [ '../../blocks', '../../posts', '../../views'  ];
 
     // Support HTML5 by default
     add_action( 'after_setup_theme', function() {

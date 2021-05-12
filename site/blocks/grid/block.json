@@ -6,14 +6,12 @@
   "category": "design",
 
   "supports": {
-     "align": ["wide", "full"],
      "html": true,
      "anchor": true,
 		 "lightBlockWrapper": false
   },
 
   "attributes": {
-    "align":          { "type": "string", "default": "wide" },
     "width":     { "type": "string" },
     "columns":        { "type": "string", "default": "2" }
   },

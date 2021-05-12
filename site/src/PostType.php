@@ -40,7 +40,12 @@ class PostType extends \Timber\Post {
     }
 
     // If no name has been passed, bail out
-    if ( empty($name) ) return false;
+    // if ( empty($name) ) return false;
+
+    // If no name passed, determine one from the classname
+    if ( empty($name) ) {
+      $name = underscore(preg_replace('/^.*\\\s*/', '', get_called_class()));
+    }
 
     // Generate names from $name
     $names = static::generate_names( $name, $args['names'] ?? [] );
@@ -80,14 +85,16 @@ class PostType extends \Timber\Post {
     static::$props['taxonomies'] = $args['taxonomies'] ?? [];
     unset($args['taxonomies']);
 
-    // If has_archive is set, use the plural slug
+
+    // No archive pages by default
     static::$props['has_archive'] = false;
+
+    // If has_archive is set, use the plural slug
     if ( ( isset($args['has_archive']) ) && ( $args['has_archive'] !== false ) ) {
       static::$props['has_archive'] = $names['slug_plural'];
-    } elseif ( isset($args['archive']) ) {
-      static::$props['has_archive'] = $names['slug_plural'];
-    }
+    } 
     unset($args['has_archive']);
+
 
     // Save args to object
     static::$args = $args;
@@ -104,6 +111,7 @@ class PostType extends \Timber\Post {
     static::register_taxonomies();
     static::register_post_meta();
     static::register_allowed_block_types();
+    static::register_block_categories();
     static::register_custom_meta_boxes();
 
     static::after_register_post_type();
@@ -125,7 +133,9 @@ class PostType extends \Timber\Post {
   // Returns names array
   private static function generate_names( $name, $names = [] ) {
 
-    // do_action( 'qm/debug', $names );
+    // Ensure name is lowercase
+    $name = strtolower($name);
+    // do_action( 'qm/debug', $name );
 
     // Determine single and plural values from $name
     $single = singularize($name);
@@ -188,7 +198,7 @@ class PostType extends \Timber\Post {
       array_merge([
 
         # https://gist.github.com/justintadlock/6552000
-        'supports'        => ['title', 'editor', 'thumbnail', 'revisions', 'custom-fields', 'page-attributes'],
+        'supports'        => ['title', 'editor', 'thumbnail', 'revisions', 'custom-fields'],
         'has_archive'     => $props['has_archive'],
         'query_var'       => $names['slug_single'],
         'capability_type' => [$names['key_single'], $names['key_plural']],
@@ -325,6 +335,15 @@ class PostType extends \Timber\Post {
 
   }
 
+  // Add a block category named after this post type
+  private static function register_block_categories() {
+    $names = static::$names;
+    add_filter( 'block_categories', function( $categories, $post ) use( $names ) {
+      return array_merge( $categories, [
+        [ 'slug' => $names['slug_single'], 'title' => $names['label_single'] ],
+      ]);
+    }, 10, 2);
+  }
 
   private static function register_native_post_type() {
 
@@ -333,7 +352,7 @@ class PostType extends \Timber\Post {
     $post_type->template_lock = static::$args['template_lock'] ?? false;
 
     // Add supports features
-    add_post_type_support( static::$name, static::$args['supports'] );
+    // add_post_type_support( static::$name, static::$args['supports'] );
 
     // Remove supports features using $args['unsupports']
     foreach ( (static::$args['unsupports'] ?? []) as $feature ) {
@@ -347,6 +366,11 @@ class PostType extends \Timber\Post {
     $post_type = static::$name;
 
     foreach(static::$props['taxonomies'] as $name => $args) {
+
+      if ( ( $name == 'category' ) || ( $name == 'tag' ) ) {
+        register_taxonomy_for_object_type( $name, $post_type );
+       continue;
+      }
 
       $tax_args = (is_array($args)) ? $args : [];
       $tax_names = static::generate_names( $name, $tax_args['names'] ?? [] );
