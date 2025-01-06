@@ -4,7 +4,7 @@ services:
   srv:
     build:
       context: ./srv
-    image: nonfiction/bedrock:srv
+    image: nonfiction/bedrock:srv6
 
   dev:
     build:
